@@ -1,0 +1,22 @@
+version: '3'
+
+tasks:
+  dev:
+    desc: Start development server
+    cmds:
+      - pnpm dev
+
+  build:
+    desc: Build for production
+    cmds:
+      - pnpm build
+
+  lint:
+    desc: Run ESLint
+    cmds:
+      - pnpm lint
+
+  start:
+    desc: Start production server
+    cmds:
+      - pnpm start
