@@ -136,6 +136,7 @@ export function SetupForm() {
             silenceThreshold={config.silenceThreshold}
             decayPenalty={config.decayPenalty}
             model={config.model}
+            contributionLength={config.contributionLength}
             onChange={(params) => setConfig({ ...config, ...params })}
           />
         </CardContent>

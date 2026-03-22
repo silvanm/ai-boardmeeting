@@ -15,6 +15,7 @@ export interface DebateConfig {
   silenceThreshold: number;
   decayPenalty: number;
   model: string;
+  contributionLength: "kurz" | "normal" | "lang";
 }
 
 export interface AgentStance {

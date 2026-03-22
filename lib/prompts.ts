@@ -80,7 +80,7 @@ Regeln für deine Wortmeldungen:
 - Sprich als ${agent.name} in der Ich-Form.
 - Lass deinen emotionalen Zustand in deinen Tonfall einfliessen — wenn du frustriert bist, zeig es; wenn du begeistert bist, ebenso.
 - Beziehe dich auf vorherige Aussagen, wenn relevant.
-- Richtwert: 3-4 Sätze. Dein Charakter kann davon abweichen — wortkargen Typen reichen 1-2 Sätze, redselige dürfen 5-6 Sätze nutzen.
+- ${getLengthGuideline(config.contributionLength)}
 - Sprich Deutsch.
 - Verwende KEIN Markdown — kein **, kein ##, keine Listen. Schreibe in natürlicher gesprochener Sprache, wie in einem echten Meeting.`;
 
@@ -125,6 +125,17 @@ ${othersIntensity}
 Du hast jetzt das Wort.`;
 
   return { system, user };
+}
+
+function getLengthGuideline(length: DebateConfig["contributionLength"]): string {
+  switch (length) {
+    case "kurz":
+      return "Richtwert: 1-2 Sätze. Fasse dich extrem kurz. Selbst redselige Typen nutzen maximal 2-3 Sätze.";
+    case "lang":
+      return "Richtwert: 5-8 Sätze. Du darfst ausführlicher argumentieren. Wortkargen Typen reichen 3-4 Sätze, redselige dürfen 8-10 Sätze nutzen.";
+    default:
+      return "Richtwert: 3-4 Sätze. Dein Charakter kann davon abweichen — wortkargen Typen reichen 1-2 Sätze, redselige dürfen 5-6 Sätze nutzen.";
+  }
 }
 
 function getRoleForAgent(agentId: string, config: DebateConfig): string {

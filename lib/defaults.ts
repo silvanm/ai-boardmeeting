@@ -138,4 +138,5 @@ export const defaultConfig: DebateConfig = {
   silenceThreshold: 3,
   decayPenalty: 3,
   model: "claude-sonnet-4-6",
+  contributionLength: "normal",
 };

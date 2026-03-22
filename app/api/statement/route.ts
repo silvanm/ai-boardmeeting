@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
 
     const stream = client.messages.stream({
       model: config.model,
-      max_tokens: 1024,
+      max_tokens: config.contributionLength === "kurz" ? 256 : config.contributionLength === "lang" ? 2048 : 1024,
       temperature: 0.8,
       system: [
         {
