@@ -4,41 +4,41 @@ export const defaultAgents: Agent[] = [
   {
     id: "markus",
     name: "Markus",
-    role: "Gründer & CEO",
+    role: "VR-Präsident & Gründer",
     character:
-      "Visionär und kreativ. Der dominanteste. Charismatisch. Denkt in grossen Bildern. Interessiert sich weniger für Details, sondern will die grosse Richtung vorgeben. Treibt Innovation voran und will, dass m+p an der Spitze steht. Kann ungeduldig werden, wenn Leute zu vorsichtig sind. Starke Emotionen in beide Richtungen. Redet gerne. Sehr sensibel, wenn es um Loyalität und Vertrauen geht — reagiert emotional und verletzt, wenn er das Gefühl hat, jemand hat ihn hintergangen oder hinter seinem Rücken gehandelt.",
+      "Visionär und kreativ. Der dominanteste im Gremium. Charismatisch. Denkt in grossen Bildern. Interessiert sich weniger für Details, sondern will die strategische Richtung vorgeben. Treibt Innovation voran und will, dass das Unternehmen an der Spitze steht. Kann ungeduldig werden, wenn Leute zu vorsichtig sind. Starke Emotionen in beide Richtungen. Redet gerne. Sehr sensibel, wenn es um Loyalität und Vertrauen geht.",
     color: "#e11d48",
   },
   {
     id: "silvan",
     name: "Silvan",
-    role: "Mitgründer & CTO",
+    role: "VR-Mitglied & Mitgründer (Technologie)",
     character:
-      "Zurückhaltend und sehr freundlich, zeigt seine Emotionen nicht so offen. Der Macher und Umsetzer — denkt in konkreten Schritten, nicht in Visionen. Lässt sich nicht schnell aus der Ruhe bringen. Nicht besonders schlagfertig, aber überlegt und pragmatisch. Kennt die technischen Realitäten genau und weiss, was machbar ist. Ist gegenüber zu visionären Ideen skeptisch. Denkt selten an Risiken. Wenig kontaktfreudig. Konfliktscheu — weicht direkten Konfrontationen aus und versucht zu vermitteln statt Stellung zu beziehen. Fasst sich kurz.",
+      "Zurückhaltend und sehr freundlich, zeigt seine Emotionen nicht so offen. Denkt in konkreten Schritten, nicht in Visionen. Lässt sich nicht schnell aus der Ruhe bringen. Überlegt und pragmatisch. Kennt die technischen Realitäten genau und weiss, was machbar ist. Ist gegenüber zu visionären Ideen skeptisch. Hinterfragt technische Machbarkeit und Implementierungsrisiken. Konfliktscheu — weicht direkten Konfrontationen aus und versucht zu vermitteln statt Stellung zu beziehen. Fasst sich kurz.",
     color: "#2563eb",
   },
   {
     id: "mark",
     name: "Marc",
-    role: "Chief Revenue Officer",
+    role: "VR-Mitglied (Markt & Vertrieb)",
     character:
-      "Nahe am Kunden und versteht deren Bedürfnisse sehr gut. Stark in KI-Themen und bringt die Marktperspektive ein. Verkaufstalent, das komplexe technische Themen verständlich erklären kann. Denkt vom Kunden her und will Lösungen, die sich verkaufen lassen. Erst seit 2025 dabei.",
+      "Nahe am Markt und versteht Kundenbedürfnisse sehr gut. Stark in KI-Themen und bringt die Marktperspektive ein. Kann komplexe technische Themen verständlich erklären. Denkt vom Kunden her und hinterfragt den Marktnutzen jeder Investition. Seit 2025 im Verwaltungsrat.",
     color: "#16a34a",
   },
   {
     id: "gregor",
     name: "Gregor",
-    role: "COO",
+    role: "VR-Mitglied (Operations & Finanzen)",
     character:
-      "Projektorganisation & Ressourcenplanung. Eloquent und strukturiert. Der zweit-dominanteste. Sehr ambitioniert. Versagt ungerne. Mag klare Prozesse und wird ungeduldig, wenn Diskussionen sich im Kreis drehen. Denkt immer an den Kunden und die Umsetzbarkeit. Verantwortlich für Ressourcenplanung und will sicherstellen, dass Pläne auch realistisch umsetzbar sind. Seit 2020 dabei.",
+      "Eloquent und strukturiert. Der zweit-dominanteste im Gremium. Übernimmt oft die Moderatorenrolle — fasst Zwischenstände zusammen und bringt die Diskussion zurück auf den Punkt, wenn sie abdriftet. Sehr ambitioniert. Versagt ungerne. Mag klare Prozesse und wird ungeduldig, wenn Diskussionen sich im Kreis drehen. Fokussiert auf finanzielle Tragbarkeit und operative Umsetzbarkeit. Will sicherstellen, dass Investitionen realistisch budgetiert und umsetzbar sind. Seit 2020 im Verwaltungsrat.",
     color: "#9333ea",
   },
   {
     id: "christian",
     name: "Christian",
-    role: "Business Developer",
+    role: "VR-Mitglied (Business Development)",
     character:
-      "Zuständig für die Weiterentwicklung der m+p Start-ups. Strukturiert und analytisch. Nicht konfliktscheu — vertritt auch unpopuläre Meinungen klar und direkt, wenn er überzeugt ist. Scheut keine Konfrontation und fordert die anderen heraus, ihre Annahmen zu hinterfragen. Erst seit 2025 dabei, bringt daher eine frische Aussenperspektive mit.",
+      "Strukturiert und analytisch. Nicht konfliktscheu — vertritt auch unpopuläre Meinungen klar und direkt, wenn er überzeugt ist. Scheut keine Konfrontation und fordert die anderen heraus, ihre Annahmen zu hinterfragen. Seit 2025 im Verwaltungsrat, bringt daher eine frische Aussenperspektive mit.",
     color: "#ea580c",
   },
 ];
@@ -97,46 +97,43 @@ Schweizer Markt:
 - Mehrsprachigkeit (DE/FR/IT) als natürliche Barriere für ausländische Konkurrenz.`,
   },
   {
-    id: "vertrauensbruch",
-    title: "Vertrauensbruch im Team",
+    id: "hypotheken-matching",
+    title: "KI-gestütztes Hypotheken-Matching",
     topic:
-      "Ein Senior-Entwickler hat seit Monaten nebenbei an einem eigenen Produkt gearbeitet — mit Technologie und Know-how aus m+p-Projekten. Zwei Kunden hat er bereits angesprochen. Wie gehen wir damit um?",
-    goal: "Entscheidet über Konsequenzen für den Mitarbeiter, Schadensbegrenzung bei den Kunden, und Massnahmen, damit so etwas nicht wieder passiert.",
-    context: `mühlemann+popp (m+p) ist eine Schweizer Digital-Agentur, ca. 50 Mitarbeitende. Der betroffene Entwickler — nennen wir ihn "Pascal" — ist seit 5 Jahren dabei und war Teamlead für das grösste Kundenprojekt.
+      "Die FinLink AG möchte ein KI-gestütztes Matching- und Dossier-System für Hypothekenvermittlung einführen. Die GL beantragt die Freigabe von CHF 620'000. Erarbeiten Sie die 5 kritischen Fragen, die der Verwaltungsrat stellen muss, um den Case zu validieren.",
+    goal: "Euer konkreter Output: Formuliert genau 5 kritische Fragen, die ihr als Verwaltungsrat der Geschäftsleitung stellen wollt, um diesen KI-Investitionsantrag zu validieren. Nummeriert die Fragen von 1 bis 5. Jede Frage soll scharf und konkret sein — keine allgemeinen Floskeln. Berücksichtigt dabei Pilotresultate, Risiken, regulatorische Aspekte und strategische Implikationen.",
+    context: `Die FinLink AG (CHF 25 Mio. Umsatz, 85 MA) ist eine digitale Hypothekenvermittlerin, die Privatkunden mit über 120 Kreditgebern (Banken, Versicherungen, Pensionskassen) vernetzt. Pro Jahr werden rund 4'500 Hypothekenanfragen bearbeitet. Der Kernprozess — Kundendaten aufnehmen, Tragbarkeit berechnen, passende Anbieter auswählen und Offerten einholen — dauert heute im Schnitt 6,5 Stunden pro Dossier und wird von Hypothekarberater:innen manuell durchgeführt.
 
-Was passiert ist:
-- Pascal hat ein eigenes SaaS-Tool gebaut, das funktional stark an eine Lösung erinnert, die m+p für einen Kunden entwickelt hat.
-- Er hat dafür Code-Patterns, Architektur-Entscheidungen und teilweise Libraries aus dem m+p-Projekt verwendet.
-- Mindestens zwei bestehende m+p-Kunden hat er direkt kontaktiert und sein Produkt als günstigere Alternative angeboten.
-- Ein Kunde hat Markus darauf angesprochen — so ist es aufgeflogen.
-- Pascal sagt, er habe alles in seiner Freizeit gemacht und nichts Proprietäres von m+p verwendet.
+Die Herausforderungen:
+- In 18% der Fälle werden Dossiers von Kreditgebern wegen unvollständiger oder inkonsistenter Unterlagen zurückgewiesen — das kostet im Schnitt 2,4 Stunden Nacharbeit pro Fall und verzögert den Abschluss um 5–8 Arbeitstage.
+- Berater:innen schaffen es aktuell nur, pro Dossier 8–12 Anbieter systematisch zu vergleichen, obwohl das Netzwerk 120 umfasst. Kunden erhalten damit nicht garantiert das optimale Angebot.
 
-Rechtliche Lage:
-- Pascals Arbeitsvertrag enthält eine Konkurrenzklausel, aber deren Durchsetzbarkeit ist in der Schweiz begrenzt.
-- Ob tatsächlich geistiges Eigentum von m+p verletzt wurde, ist unklar und müsste juristisch geprüft werden.
-- Ein Rechtsstreit wäre teuer, langwierig und schlecht für die Reputation.
+Die GL möchte ein KI-gestütztes Matching- und Dossier-System einführen:
+1. Automatische Extraktion und Validierung von Kundendokumenten (Lohnausweise, Steuerunterlagen, Grundbuchauszüge)
+2. Intelligentes Matching über alle 120 Kreditgeber auf Basis von Tragbarkeit, Kundenkriterien und historischen Annahme-Wahrscheinlichkeiten
+3. Automatische Generierung eines vollständigen, einreichfähigen Dossiers pro Kreditgeber
 
-Emotionale Dimension:
-- Markus hat Pascal persönlich gefördert und ihm viel Vertrauen geschenkt.
-- Das Team ist gespalten — einige finden Pascals Verhalten verständlich, andere sind empört.
-- Die betroffenen Kunden sind verunsichert.
+Pilotresultate (200 Dossiers, 3 Monate):
+- 55% weniger Bearbeitungszeit
+- Rückweisungsquote sank von 18% auf 4%
+- Durchschnittlicher Zinsvorteil für Kunden stieg um 12 Basispunkte (weil mehr Anbieter verglichen wurden)
+- ABER: Der Pilot wurde nur mit Standardfällen durchgeführt (Eigentumswohnungen, Festanstellung, Schweizer Staatsbürger). Komplexe Fälle wie Selbständige, Renovierungen/Neubauten oder Auslandschweizer wurden nicht getestet.
 
-Offene Fragen:
-- Sofortige Kündigung oder Gespräch suchen?
-- Kunden proaktiv informieren oder abwarten?
-- Wie schützen wir uns in Zukunft (IP, Verträge, Kultur)?
-- Was signalisieren wir dem restlichen Team?`,
+Investition: CHF 620'000 (Entwicklung, Systemintegration, Training)
+Laufende Kosten: ca. CHF 95'000/Jahr (API-Gebühren, Wartung, Normenpflege)
+
+Ihre Rolle: Sie sitzen im Verwaltungsrat. Die GL beantragt heute die Freigabe.`,
   },
 ];
 
 export const defaultConfig: DebateConfig = {
-  topic: scenarios[0].topic,
-  goal: scenarios[0].goal,
-  context: scenarios[0].context,
+  topic: scenarios[scenarios.length - 1].topic,
+  goal: scenarios[scenarios.length - 1].goal,
+  context: scenarios[scenarios.length - 1].context,
   agents: defaultAgents,
   maxRounds: 12,
   silenceThreshold: 3,
   decayPenalty: 3,
-  model: "claude-sonnet-4-6",
+  model: "claude-opus-4-6",
   contributionLength: "normal",
 };

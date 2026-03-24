@@ -39,7 +39,7 @@ Schreibe in klarer, professioneller Sprache. Verwende Markdown-Formatierung (##,
 
     const stream = client.messages.stream({
       model: config.model,
-      max_tokens: 1024,
+      max_tokens: 4096,
       temperature: 0.3,
       messages: [{ role: "user", content: prompt }],
     });

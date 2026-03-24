@@ -4,6 +4,8 @@ import { useEffect, useState, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import { DebateConfig, DebateMessage } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { FileDown } from "lucide-react";
 
 interface DebateSummaryProps {
   config: DebateConfig;
@@ -14,6 +16,7 @@ export function DebateSummary({ config, messages }: DebateSummaryProps) {
   const [summary, setSummary] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const fetchedRef = useRef(false);
+  const summaryRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (messages.length === 0 || fetchedRef.current) return;
@@ -77,6 +80,45 @@ export function DebateSummary({ config, messages }: DebateSummaryProps) {
 
   const totalRounds = messages.length > 0 ? messages[messages.length - 1].round : 0;
 
+  const handleExportPdf = () => {
+    const renderedHtml = summaryRef.current?.innerHTML ?? "";
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) return;
+    printWindow.document.write(`<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Meeting-Protokoll</title>
+<style>
+  body { font-family: 'Segoe UI', system-ui, sans-serif; max-width: 700px; margin: 40px auto; color: #1a1a1a; line-height: 1.6; font-size: 14px; }
+  h1 { font-size: 20px; border-bottom: 2px solid #333; padding-bottom: 8px; }
+  h2 { font-size: 16px; margin-top: 24px; margin-bottom: 8px; }
+  h3 { font-size: 14px; margin-top: 16px; margin-bottom: 6px; }
+  ul, ol { padding-left: 24px; margin: 8px 0; }
+  ul { list-style-type: disc; }
+  ol { list-style-type: decimal; }
+  li { margin: 4px 0; }
+  p { margin: 6px 0; }
+  strong { font-weight: 700; }
+  .meta { color: #666; font-size: 13px; margin-bottom: 24px; }
+  @media print { body { margin: 20px; } }
+</style>
+</head>
+<body>
+<h1>Meeting-Protokoll</h1>
+<div class="meta">
+  <strong>Thema:</strong> ${config.topic}<br>
+  <strong>Teilnehmer:</strong> ${config.agents.map((a) => `${a.name} (${a.role})`).join(", ")}<br>
+  <strong>Datum:</strong> ${new Date().toLocaleDateString("de-CH")}<br>
+  <strong>Runden:</strong> ${totalRounds} (${messages.length} Beiträge)
+</div>
+${renderedHtml}
+</body>
+</html>`);
+    printWindow.document.close();
+    printWindow.onload = () => { printWindow.print(); };
+  };
+
   return (
     <div className="space-y-4">
       <Card>
@@ -98,14 +140,22 @@ export function DebateSummary({ config, messages }: DebateSummaryProps) {
 
       <Card className="bg-white text-black dark:bg-white dark:text-black">
         <CardHeader className="py-3 px-4 border-b border-gray-200">
-          <CardTitle className="text-sm text-black">
-            Meeting-Protokoll
-            {isLoading && <span className="ml-2 text-xs font-normal text-gray-500">wird erstellt...</span>}
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-sm text-black">
+              Meeting-Protokoll
+              {isLoading && <span className="ml-2 text-xs font-normal text-gray-500">wird erstellt...</span>}
+            </CardTitle>
+            {summary && !isLoading && (
+              <Button variant="ghost" size="sm" onClick={handleExportPdf} className="h-7 px-2 text-gray-600 hover:text-black">
+                <FileDown className="h-4 w-4 mr-1" />
+                <span className="text-xs">PDF</span>
+              </Button>
+            )}
+          </div>
         </CardHeader>
         <CardContent className="px-4 pb-4 pt-3">
           {summary ? (
-            <div className="prose prose-sm prose-neutral max-w-none
+            <div ref={summaryRef} className="prose prose-sm prose-neutral max-w-none
               [&_h1]:text-base [&_h1]:font-bold [&_h1]:mt-3 [&_h1]:mb-1
               [&_h2]:text-sm [&_h2]:font-bold [&_h2]:mt-3 [&_h2]:mb-1
               [&_h3]:text-sm [&_h3]:font-semibold [&_h3]:mt-2 [&_h3]:mb-1
