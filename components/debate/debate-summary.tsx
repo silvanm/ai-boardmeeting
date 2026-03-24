@@ -160,8 +160,8 @@ ${renderedHtml}
               [&_h2]:text-sm [&_h2]:font-bold [&_h2]:mt-3 [&_h2]:mb-1
               [&_h3]:text-sm [&_h3]:font-semibold [&_h3]:mt-2 [&_h3]:mb-1
               [&_p]:text-sm [&_p]:my-1
-              [&_ul]:text-sm [&_ul]:my-1 [&_ul]:pl-4
-              [&_ol]:text-sm [&_ol]:my-1 [&_ol]:pl-4
+              [&_ul]:text-sm [&_ul]:my-1 [&_ul]:pl-4 [&_ul]:list-disc
+              [&_ol]:text-sm [&_ol]:my-1 [&_ol]:pl-4 [&_ol]:list-decimal
               [&_li]:my-0.5
               [&_strong]:font-bold
             ">

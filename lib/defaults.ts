@@ -100,7 +100,7 @@ Schweizer Markt:
     id: "hypotheken-matching",
     title: "KI-gestütztes Hypotheken-Matching",
     topic:
-      "Die FinLink AG möchte ein KI-gestütztes Matching- und Dossier-System für Hypothekenvermittlung einführen. Die GL beantragt die Freigabe von CHF 620'000. Erarbeiten Sie die 5 kritischen Fragen, die der Verwaltungsrat stellen muss, um den Case zu validieren.",
+      "Die GL der FinLink AG beantragt CHF 620'000 für ein KI-gestütztes Hypotheken-Matching-System. Welche 5 kritischen Fragen muss der VR stellen?",
     goal: "Euer konkreter Output: Formuliert genau 5 kritische Fragen, die ihr als Verwaltungsrat der Geschäftsleitung stellen wollt, um diesen KI-Investitionsantrag zu validieren. Nummeriert die Fragen von 1 bis 5. Jede Frage soll scharf und konkret sein — keine allgemeinen Floskeln. Berücksichtigt dabei Pilotresultate, Risiken, regulatorische Aspekte und strategische Implikationen.",
     context: `Die FinLink AG (CHF 25 Mio. Umsatz, 85 MA) ist eine digitale Hypothekenvermittlerin, die Privatkunden mit über 120 Kreditgebern (Banken, Versicherungen, Pensionskassen) vernetzt. Pro Jahr werden rund 4'500 Hypothekenanfragen bearbeitet. Der Kernprozess — Kundendaten aufnehmen, Tragbarkeit berechnen, passende Anbieter auswählen und Offerten einholen — dauert heute im Schnitt 6,5 Stunden pro Dossier und wird von Hypothekarberater:innen manuell durchgeführt.
 
