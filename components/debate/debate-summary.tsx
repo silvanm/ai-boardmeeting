@@ -6,6 +6,7 @@ import { DebateConfig, DebateMessage } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileDown } from "lucide-react";
+import { useLocale } from "@/lib/i18n";
 
 interface DebateSummaryProps {
   config: DebateConfig;
@@ -13,6 +14,7 @@ interface DebateSummaryProps {
 }
 
 export function DebateSummary({ config, messages }: DebateSummaryProps) {
+  const { t } = useLocale();
   const [summary, setSummary] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const fetchedRef = useRef(false);
@@ -88,7 +90,7 @@ export function DebateSummary({ config, messages }: DebateSummaryProps) {
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Meeting-Protokoll</title>
+<title>${t("meetingProtocol")}</title>
 <style>
   body { font-family: 'Segoe UI', system-ui, sans-serif; max-width: 700px; margin: 40px auto; color: #1a1a1a; line-height: 1.6; font-size: 14px; }
   h1 { font-size: 20px; border-bottom: 2px solid #333; padding-bottom: 8px; }
@@ -105,12 +107,12 @@ export function DebateSummary({ config, messages }: DebateSummaryProps) {
 </style>
 </head>
 <body>
-<h1>Meeting-Protokoll</h1>
+<h1>${t("meetingProtocol")}</h1>
 <div class="meta">
-  <strong>Thema:</strong> ${config.topic}<br>
-  <strong>Teilnehmer:</strong> ${config.agents.map((a) => `${a.name} (${a.role})`).join(", ")}<br>
-  <strong>Datum:</strong> ${new Date().toLocaleDateString("de-CH")}<br>
-  <strong>Runden:</strong> ${totalRounds} (${messages.length} Beiträge)
+  <strong>${t("exportTopic")}:</strong> ${config.topic}<br>
+  <strong>${t("exportParticipants")}:</strong> ${config.agents.map((a) => `${a.name} (${a.role})`).join(", ")}<br>
+  <strong>${t("exportDate")}:</strong> ${new Date().toLocaleDateString("de-CH")}<br>
+  <strong>${t("exportRounds")}:</strong> ${totalRounds} (${messages.length} ${t("contributions")})
 </div>
 ${renderedHtml}
 </body>
@@ -123,16 +125,16 @@ ${renderedHtml}
     <div className="space-y-4">
       <Card>
         <CardHeader className="py-3 px-4">
-          <CardTitle className="text-sm">Statistik</CardTitle>
+          <CardTitle className="text-sm">{t("statistics")}</CardTitle>
         </CardHeader>
         <CardContent className="px-4 pb-4 space-y-2">
           <p className="text-xs text-muted-foreground">
-            {totalRounds} Runden, {messages.length} Beiträge
+            {totalRounds} {t("rounds")}, {messages.length} {t("contributions")}
           </p>
           {speakerCounts.map((s) => (
             <div key={s.name} className="flex items-center justify-between text-xs">
               <span style={{ color: s.color }}>{s.name}</span>
-              <span className="text-muted-foreground">{s.count} Beiträge</span>
+              <span className="text-muted-foreground">{s.count} {t("contributions")}</span>
             </div>
           ))}
         </CardContent>
@@ -142,13 +144,13 @@ ${renderedHtml}
         <CardHeader className="py-3 px-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm text-black">
-              Meeting-Protokoll
-              {isLoading && <span className="ml-2 text-xs font-normal text-gray-500">wird erstellt...</span>}
+              {t("meetingProtocol")}
+              {isLoading && <span className="ml-2 text-xs font-normal text-gray-500">{t("protocolLoading")}</span>}
             </CardTitle>
             {summary && !isLoading && (
               <Button variant="ghost" size="sm" onClick={handleExportPdf} className="h-7 px-2 text-gray-600 hover:text-black">
                 <FileDown className="h-4 w-4 mr-1" />
-                <span className="text-xs">PDF</span>
+                <span className="text-xs">{t("pdf")}</span>
               </Button>
             )}
           </div>
@@ -169,7 +171,7 @@ ${renderedHtml}
             </div>
           ) : (
             <p className="text-xs text-gray-500">
-              {isLoading ? "Protokoll wird erstellt..." : "Kein Protokoll verfügbar."}
+              {isLoading ? t("protocolCreating") : t("protocolUnavailable")}
             </p>
           )}
         </CardContent>

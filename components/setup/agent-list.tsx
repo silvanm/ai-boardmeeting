@@ -4,6 +4,7 @@ import { Agent } from "@/lib/types";
 import { AgentCard } from "./agent-card";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { useLocale } from "@/lib/i18n";
 
 interface AgentListProps {
   agents: Agent[];
@@ -13,6 +14,7 @@ interface AgentListProps {
 const COLORS = ["#e11d48", "#2563eb", "#16a34a", "#9333ea", "#ea580c", "#0891b2", "#ca8a04", "#dc2626"];
 
 export function AgentList({ agents, onChange }: AgentListProps) {
+  const { t } = useLocale();
   const addAgent = () => {
     const id = `agent-${Date.now()}`;
     const color = COLORS[agents.length % COLORS.length];
@@ -42,7 +44,7 @@ export function AgentList({ agents, onChange }: AgentListProps) {
       ))}
       {agents.length < 8 && (
         <Button variant="outline" onClick={addAgent} className="w-full">
-          <Plus className="h-4 w-4 mr-2" /> Agent hinzufügen
+          <Plus className="h-4 w-4 mr-2" /> {t("addAgent")}
         </Button>
       )}
     </div>

@@ -15,7 +15,30 @@ export async function POST(req: NextRequest) {
       .map((m) => `[${m.agentName} (${m.agentRole})]: ${m.content}`)
       .join("\n\n");
 
-    const prompt = `Du bist ein neutraler Protokollführer. Fasse das folgende GL-Meeting zusammen.
+    const isEn = config.locale === "en";
+    const prompt = isEn
+      ? `You are a neutral minute-taker. Summarize the following board meeting.
+
+Topic: ${config.topic}
+Goal: ${config.goal}
+Participants: ${config.agents.map((a) => `${a.name} (${a.role})`).join(", ")}
+
+Transcript:
+${transcript}
+
+Create meeting minutes with the following structure in Markdown:
+
+## Decisions
+What did the board concretely decide? (Bullet points)
+
+## Next Steps
+Who does what? (Bullet points with **Name** in bold)
+
+## Open Items
+What still needs to be clarified?
+
+Write in clear, professional language. Use Markdown formatting (##, -, **bold**). Write in English.`
+      : `Du bist ein neutraler Protokollführer. Fasse das folgende GL-Meeting zusammen.
 
 Thema: ${config.topic}
 Ziel: ${config.goal}

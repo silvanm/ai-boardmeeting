@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
+import { useLocale } from "@/lib/i18n";
 
 interface AgentCardProps {
   agent: Agent;
@@ -16,12 +17,13 @@ interface AgentCardProps {
 }
 
 export function AgentCard({ agent, onChange, onRemove, canRemove }: AgentCardProps) {
+  const { t } = useLocale();
   return (
     <Card className="relative" style={{ borderLeftColor: agent.color, borderLeftWidth: 4 }}>
       <CardContent className="p-4 space-y-3">
         <div className="flex items-center gap-3">
           <div className="flex-1 space-y-1">
-            <Label htmlFor={`name-${agent.id}`}>Name</Label>
+            <Label htmlFor={`name-${agent.id}`}>{t("name")}</Label>
             <Input
               id={`name-${agent.id}`}
               value={agent.name}
@@ -29,7 +31,7 @@ export function AgentCard({ agent, onChange, onRemove, canRemove }: AgentCardPro
             />
           </div>
           <div className="flex-1 space-y-1">
-            <Label htmlFor={`role-${agent.id}`}>Rolle</Label>
+            <Label htmlFor={`role-${agent.id}`}>{t("role")}</Label>
             <Input
               id={`role-${agent.id}`}
               value={agent.role}
@@ -37,7 +39,7 @@ export function AgentCard({ agent, onChange, onRemove, canRemove }: AgentCardPro
             />
           </div>
           <div className="space-y-1">
-            <Label htmlFor={`color-${agent.id}`}>Farbe</Label>
+            <Label htmlFor={`color-${agent.id}`}>{t("color")}</Label>
             <input
               id={`color-${agent.id}`}
               type="color"
@@ -53,7 +55,7 @@ export function AgentCard({ agent, onChange, onRemove, canRemove }: AgentCardPro
           )}
         </div>
         <div className="space-y-1">
-          <Label htmlFor={`character-${agent.id}`}>Charakter</Label>
+          <Label htmlFor={`character-${agent.id}`}>{t("character")}</Label>
           <Textarea
             id={`character-${agent.id}`}
             value={agent.character}

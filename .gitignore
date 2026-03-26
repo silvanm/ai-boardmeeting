@@ -38,3 +38,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# secrets
+client_secret_*.json
+
+# IDE/plugin state
+.claudine/
+.history/
+.omc/

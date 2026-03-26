@@ -12,9 +12,11 @@ import { DebateControls } from "./debate-controls";
 import { DebateSummary } from "./debate-summary";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import { useLocale } from "@/lib/i18n";
 
 export function DebateContainer() {
   const router = useRouter();
+  const { t } = useLocale();
   const [config, setConfig] = useState<DebateConfig | null>(null);
 
   useEffect(() => {
@@ -29,7 +31,7 @@ export function DebateContainer() {
   if (!config) {
     return (
       <div className="flex items-center justify-center h-screen text-muted-foreground">
-        Lade Konfiguration...
+        {t("loadingConfig")}
       </div>
     );
   }

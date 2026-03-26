@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { DebateConfig } from "@/lib/types";
-import { defaultConfig, scenarios, defaultAgents } from "@/lib/defaults";
+import { getDefaultConfig, getScenarios, getDefaultAgents, Scenario } from "@/lib/defaults";
 import { AgentList } from "./agent-list";
 import { ParametersPanel } from "./parameters-panel";
 import { Button } from "@/components/ui/button";
@@ -11,20 +11,40 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Play, RotateCcw } from "lucide-react";
+import { Play, RotateCcw, Globe } from "lucide-react";
+import { useLocale } from "@/lib/i18n";
 
 export function SetupForm() {
   const router = useRouter();
-  const [config, setConfig] = useState<DebateConfig>(defaultConfig);
-  const [selectedScenario, setSelectedScenario] = useState<string>(scenarios[0].id);
+  const { locale, setLocale, t } = useLocale();
+  const [config, setConfig] = useState<DebateConfig>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("debateSettings");
+      if (saved) {
+        try { return JSON.parse(saved) as DebateConfig; } catch { /* ignore */ }
+      }
+    }
+    return getDefaultConfig(locale);
+  });
+  const [currentScenarios, setCurrentScenarios] = useState<Scenario[]>(getScenarios(locale));
+  const [selectedScenario, setSelectedScenario] = useState<string>(currentScenarios[currentScenarios.length - 1].id);
+
+  useEffect(() => {
+    const newScenarios = getScenarios(locale);
+    const newConfig = getDefaultConfig(locale);
+    setCurrentScenarios(newScenarios);
+    setConfig(newConfig);
+    setSelectedScenario(newScenarios[newScenarios.length - 1].id);
+  }, [locale]);
 
   const loadDefaults = () => {
-    setConfig(defaultConfig);
-    setSelectedScenario(scenarios[0].id);
+    const newConfig = getDefaultConfig(locale);
+    setConfig(newConfig);
+    setSelectedScenario(currentScenarios[currentScenarios.length - 1].id);
   };
 
   const selectScenario = (scenarioId: string) => {
-    const scenario = scenarios.find((s) => s.id === scenarioId);
+    const scenario = currentScenarios.find((s) => s.id === scenarioId);
     if (scenario) {
       setSelectedScenario(scenarioId);
       setConfig({
@@ -32,13 +52,15 @@ export function SetupForm() {
         topic: scenario.topic,
         goal: scenario.goal,
         context: scenario.context,
-        agents: defaultAgents,
+        agents: getDefaultAgents(locale),
       });
     }
   };
 
   const startDebate = () => {
-    sessionStorage.setItem("debateConfig", JSON.stringify(config));
+    const fullConfig = { ...config, locale };
+    sessionStorage.setItem("debateConfig", JSON.stringify(fullConfig));
+    localStorage.setItem("debateSettings", JSON.stringify(fullConfig));
     router.push("/debate");
   };
 
@@ -51,21 +73,32 @@ export function SetupForm() {
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">AI Board Meeting</h1>
-          <p className="text-muted-foreground">Konfiguriere die Teilnehmer und starte die Debatte</p>
+          <h1 className="text-3xl font-bold">{t("appTitle")}</h1>
+          <p className="text-muted-foreground">{t("appSubtitle")}</p>
         </div>
-        <Button variant="outline" onClick={loadDefaults}>
-          <RotateCcw className="h-4 w-4 mr-2" /> Defaults laden
-        </Button>
+        <div className="flex items-center gap-3">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setLocale(locale === "de" ? "en" : "de")}
+          >
+            <Globe className="h-4 w-4 mr-1" />
+            {locale === "de" ? "EN" : "DE"}
+          </Button>
+          <Button variant="outline" onClick={loadDefaults}>
+            <RotateCcw className="h-4 w-4 mr-2" /> {t("loadDefaults")}
+          </Button>
+          <img src="https://storage.googleapis.com/mpom-public/mp-horizontal-black-logo.svg" alt="m+p" className="h-8" />
+        </div>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Szenario</CardTitle>
+          <CardTitle>{t("scenario")}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex gap-2 flex-wrap">
-            {scenarios.map((s) => (
+            {currentScenarios.map((s) => (
               <Button
                 key={s.id}
                 variant={selectedScenario === s.id ? "default" : "outline"}
@@ -80,37 +113,37 @@ export function SetupForm() {
               size="sm"
               onClick={() => setSelectedScenario("custom")}
             >
-              Eigenes Thema
+              {t("customTopic")}
             </Button>
           </div>
 
           <div className="space-y-1">
-            <Label htmlFor="topic">Diskussionsthema</Label>
+            <Label htmlFor="topic">{t("topic")}</Label>
             <Input
               id="topic"
               value={config.topic}
               onChange={(e) => setConfig({ ...config, topic: e.target.value })}
-              placeholder="Worüber soll diskutiert werden?"
+              placeholder={t("topicPlaceholder")}
             />
           </div>
           <div className="space-y-1">
-            <Label htmlFor="goal">Ziel</Label>
+            <Label htmlFor="goal">{t("goal")}</Label>
             <Textarea
               id="goal"
               value={config.goal}
               onChange={(e) => setConfig({ ...config, goal: e.target.value })}
-              placeholder="Was soll am Ende herauskommen?"
+              placeholder={t("goalPlaceholder")}
               rows={2}
             />
           </div>
           <div className="space-y-1">
-            <Label htmlFor="context">Hintergrund-Kontext</Label>
-            <p className="text-xs text-muted-foreground">Wird den Teilnehmern als Hintergrundwissen mitgegeben, aber im Debate-Screen nicht angezeigt.</p>
+            <Label htmlFor="context">{t("context")}</Label>
+            <p className="text-xs text-muted-foreground">{t("contextHelp")}</p>
             <Textarea
               id="context"
               value={config.context}
               onChange={(e) => setConfig({ ...config, context: e.target.value })}
-              placeholder="Welchen Kontext sollen die Teilnehmer haben?"
+              placeholder={t("contextPlaceholder")}
               rows={6}
             />
           </div>
@@ -119,7 +152,7 @@ export function SetupForm() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Teilnehmer</CardTitle>
+          <CardTitle>{t("participants")}</CardTitle>
         </CardHeader>
         <CardContent>
           <AgentList agents={config.agents} onChange={(agents) => setConfig({ ...config, agents })} />
@@ -128,7 +161,7 @@ export function SetupForm() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Parameter</CardTitle>
+          <CardTitle>{t("parameters")}</CardTitle>
         </CardHeader>
         <CardContent>
           <ParametersPanel
@@ -137,13 +170,14 @@ export function SetupForm() {
             decayPenalty={config.decayPenalty}
             model={config.model}
             contributionLength={config.contributionLength}
+            webSearch={config.webSearch}
             onChange={(params) => setConfig({ ...config, ...params })}
           />
         </CardContent>
       </Card>
 
       <Button onClick={startDebate} disabled={!isValid} size="lg" className="w-full">
-        <Play className="h-5 w-5 mr-2" /> Debatte starten
+        <Play className="h-5 w-5 mr-2" /> {t("startDebate")}
       </Button>
     </div>
   );

@@ -16,6 +16,8 @@ export interface DebateConfig {
   decayPenalty: number;
   model: string;
   contributionLength: "kurz" | "normal" | "lang";
+  webSearch: boolean;
+  locale: "de" | "en";
 }
 
 export interface AgentStance {

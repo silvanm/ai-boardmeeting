@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { DebateMessage } from "@/lib/types";
 import { MessageBubble } from "./message-bubble";
+import { useLocale } from "@/lib/i18n";
 
 interface MessageListProps {
   messages: DebateMessage[];
@@ -25,6 +26,7 @@ export function MessageList({
   agentRole,
   streamingEmoji,
 }: MessageListProps) {
+  const { t } = useLocale();
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export function MessageList({
     <div className="flex-1 overflow-y-auto px-4 py-2 space-y-1">
       {messages.length === 0 && !streamingSpeaker && (
         <div className="flex items-center justify-center h-full text-muted-foreground">
-          Die Debatte beginnt gleich...
+          {t("debateStarting")}
         </div>
       )}
       {messages.map((msg) => (
