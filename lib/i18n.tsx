@@ -150,9 +150,9 @@ interface LocaleContextValue {
 const LocaleContext = createContext<LocaleContextValue | null>(null);
 
 function detectLocale(): Locale {
-  if (typeof window === "undefined") return "de";
+  if (typeof window === "undefined") return "en";
   const browserLang = navigator.language.split("-")[0];
-  return browserLang === "en" ? "en" : "de";
+  return browserLang === "de" ? "de" : "en";
 }
 
 export function LocaleProvider({ children }: { children: ReactNode }) {

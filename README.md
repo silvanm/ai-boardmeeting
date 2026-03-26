@@ -1,128 +1,143 @@
 # AI Board Meeting
 
-Multi-Agent-Debattensystem, das live GL-Meetings zwischen KI-Agenten simuliert. Jeder Agent hat eine eigene Persönlichkeit, Emotionen und einen intensitätsbasierten Sprechmechanismus, der natürliche Gesprächsdynamik erzeugt.
+Multi-agent debate system that simulates live board meetings between AI agents. Each agent has its own personality, emotions, and an intensity-based speaking mechanism that creates natural conversation dynamics.
 
-Gebaut als Web-App für visuelle Demos bei Präsentationen.
+Built as a web app for visual demos at presentations.
 
 ## Setup
 
 ```bash
-pnpm install  # oder npm install
+pnpm install
 cp .env.example .env.local
-# ANTHROPIC_API_KEY in .env.local setzen
-npm run dev
+# Set ANTHROPIC_API_KEY in .env.local
+# For Google Auth: set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, AUTH_SECRET
+pnpm dev
 ```
 
-Öffne http://localhost:3000.
+Open http://localhost:3000.
 
-## Wie es funktioniert
+## How It Works
 
-### Kernmechanik (pro Runde)
+### Core Mechanics (per round)
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│  1. INTENSITY SCORING (parallel, alle Agents)           │
-│     - Jeder Agent bewertet: "Will ich reden?" (1-10)    │
-│     - Zusätzlich: Mood + Stances gegenüber anderen      │
-│     - Letzter Sprecher bekommt Decay Penalty (-3)       │
-│     → Ergebnis: Sortierte IntensityResult[]             │
+│  1. INTENSITY SCORING (parallel, all agents)            │
+│     - Each agent rates: "Do I want to speak?" (1-10)    │
+│     - Additionally: Mood + Stances towards others       │
+│     - Last speaker gets Decay Penalty (-3)              │
+│     → Result: Sorted IntensityResult[]                  │
 ├─────────────────────────────────────────────────────────┤
-│  2. SPRECHER-AUSWAHL                                    │
-│     - Höchster effektiver Score spricht                 │
-│     - Tie-Break: wer am längsten geschwiegen hat        │
-│     - Alle Scores < Schwelle → Debatte endet natürlich  │
+│  2. SPEAKER SELECTION                                   │
+│     - Highest effective score speaks                    │
+│     - Tie-break: who has been silent the longest        │
+│     - All scores < threshold → debate ends naturally    │
 ├─────────────────────────────────────────────────────────┤
 │  3. STATEMENT (streaming)                               │
-│     - Gewählter Sprecher bekommt den vollen Kontext     │
-│     - Inkl. was die anderen gerade denken/fühlen        │
-│     - Antwort streamt token-by-token in die Chat-View   │
+│     - Selected speaker gets the full context            │
+│     - Including what others are thinking/feeling        │
+│     - Response streams token-by-token into the chat     │
 ├─────────────────────────────────────────────────────────┤
-│  4. WIEDERHOLEN ab Schritt 1                            │
-│     - Bis Silence Threshold oder soft Round Limit       │
+│  4. REPEAT from step 1                                  │
+│     - Until Silence Threshold or soft Round Limit       │
 └─────────────────────────────────────────────────────────┘
 ```
 
-### Emotionssimulation
+### Emotion Simulation
 
-Jeder Agent hat einen emotionalen Zustand, der sich über die Runden entwickelt:
+Each agent has an emotional state that evolves across rounds:
 
-- **Mood**: Ein Wort (z.B. "enthusiastisch", "frustriert", "nachdenklich")
-- **Stances**: Haltung gegenüber jedem anderen Teilnehmer (Zustimmung / Neutral / Skepsis / Spannung / Bewunderung)
+- **Mood**: One word (e.g. "enthusiastic", "frustrated", "thoughtful")
+- **Stances**: Attitude towards each other participant (Agreement / Neutral / Skepticism / Tension / Admiration)
 
-Der vorherige emotionale Zustand fliesst in den nächsten Prompt ein. Das erzeugt emergente Dynamik: Allianzen, Eskalationen, Kompromisse entstehen organisch.
+The previous emotional state feeds into the next prompt. This creates emergent dynamics: alliances, escalations, and compromises arise organically.
 
-### Zeitdruck-Mechanik
+### Time Pressure Mechanics
 
-Die Rundenlimite ist **weich**, nicht hart:
+The round limit is **soft**, not hard:
 
-| Progress | Effekt |
+| Progress | Effect |
 |----------|--------|
-| 0–49% | Freie Diskussion |
-| 50–74% | Hinweis: "Steuert Richtung Ergebnis" |
-| 75–99% | Druck: "Zeit wird knapp, sucht Konsens" |
-| 100%+ | Starker Druck: "Meeting muss JETZT enden" |
-| 150% | Absolute Grenze (Sicherheitsnetz) |
+| 0–49% | Free discussion |
+| 50–74% | Hint: "Start steering towards a result" |
+| 75–99% | Pressure: "Time is running out, seek consensus" |
+| 100%+ | Strong pressure: "Meeting must end NOW" |
+| 150% | Absolute limit (safety net) |
 
-Agents senken ihre Intensity-Scores automatisch → Debatte endet organisch über Silence Threshold.
+Agents automatically lower their intensity scores → debate ends organically via the silence threshold.
 
 ### Prompt Caching
 
-Statischer Prompt-Teil (Agent-Identität, Kontext, Instruktionen) wird als `system` Message mit `cache_control: ephemeral` gesendet. Der dynamische Teil (Transcript, Emotionen, Zeitdruck) kommt als `user` Message. Das reduziert Kosten und Latenz ab Runde 2 erheblich.
+The static prompt part (agent identity, context, instructions) is sent as a `system` message with `cache_control: ephemeral`. The dynamic part (transcript, emotions, time pressure) comes as the `user` message. This significantly reduces cost and latency from round 2 onwards.
 
-### Animierte Emojis
+### Animated Emojis
 
-Jeder Agent bekommt ein animiertes Noto-Emoji, das seine aktuelle Stimmung visualisiert:
+Each agent gets an animated Noto emoji visualizing their current mood:
 
-- **Sofort**: Statisches Fallback-Mapping (Mood-Wort → Emoji-Codepoint)
-- **Alle 3 Runden**: Async Haiku-Call wählt das passendste Emoji aus ~27 Noto-Animationen
+- **Immediately**: Static fallback mapping (mood word → emoji codepoint)
+- **Every 3 rounds**: Async Haiku call selects the best-fitting emoji from ~27 Noto animations
 
-Die Emojis werden als Lottie-Animationen von `fonts.gstatic.com` geladen.
+Emojis are loaded as Lottie animations from `fonts.gstatic.com`.
 
-## Architektur
+## Architecture
 
 ```
 app/
-  page.tsx                  # Setup-Seite (Szenario, Agents, Parameter)
-  debate/page.tsx           # Debate-View
+  page.tsx                  # Setup page (scenario, agents, parameters)
+  debate/page.tsx           # Debate view
+  login/page.tsx            # Google OAuth login
   api/
-    intensities/route.ts    # Parallel Intensity Scoring
-    statement/route.ts      # SSE-Stream des Statements
-    summary/route.ts        # Meeting-Protokoll generieren
-    emoji/route.ts          # AI Emoji-Auswahl
+    auth/[...nextauth]/     # NextAuth.js handler
+    intensities/route.ts    # Parallel intensity scoring
+    statement/route.ts      # SSE stream of the statement
+    summary/route.ts        # Meeting minutes generation
+    emoji/route.ts          # AI emoji selection
 
 components/
-  setup/                    # Agent-Cards, Parameter-Sliders, Szenario-Wahl
-  debate/                   # Message-Bubbles, Intensity-Bars, Controls
+  setup/                    # Agent cards, parameter sliders, scenario selection
+  debate/                   # Message bubbles, intensity bars, controls
 
 hooks/
-  use-debate.ts             # Kern-Statemachine + Rundenschleife
+  use-debate.ts             # Core state machine + round loop
 
 lib/
-  types.ts                  # TypeScript Interfaces
-  prompts.ts                # System/User Prompt-Aufbau (cacheable)
-  defaults.ts               # Szenarien + Default-Agents (m+p GL)
-  emoji-map.ts              # Mood → Emoji Fallback-Mapping
+  types.ts                  # TypeScript interfaces
+  prompts.ts                # System/User prompt construction (cacheable, DE/EN)
+  defaults.ts               # Scenarios + default agents (DE/EN)
+  i18n.tsx                  # Localization context (DE/EN)
+  auth.ts                   # NextAuth.js config (Google, domain restriction)
+  emoji-map.ts              # Mood → Emoji fallback mapping
+  export.ts                 # Markdown export
 ```
 
 ## Tech Stack
 
 - **Next.js 15** (App Router, Turbopack)
 - **Anthropic SDK** (Server-side, Streaming, Prompt Caching)
+- **NextAuth.js v5** (Google OAuth, domain restriction)
 - **shadcn/ui** + Tailwind CSS
-- **Framer Motion** (Animationen)
-- **Lottie React** (Animierte Noto-Emojis)
-- **next-themes** (Dark Mode)
+- **Framer Motion** (Animations)
+- **Lottie React** (Animated Noto emojis)
+- **next-themes** (Light/Dark mode)
 
-## Szenarien
+## Scenarios
 
-Drei vorkonfigurierte Szenarien:
+Three pre-configured scenarios (available in DE and EN):
 
-1. **KI ersetzt Programmierer** — Strategische Positionierung
-2. **Investment in SaaS-Produkte** — Business Case mit Schweizer Kontext
-3. **Vertrauensbruch im Team** — Emotionale Konfliktsituation
+1. **AI Replaces Developers** — Strategic positioning
+2. **Investment in SaaS Products** — Business case with Swiss context
+3. **AI-Powered Mortgage Matching** — Board validates a CHF 620K AI investment
 
-Eigene Szenarien können über "Eigenes Thema" erstellt werden.
+Custom scenarios can be created via "Custom Topic".
+
+## Features
+
+- **DE/EN localization** — UI, agent profiles, scenarios, and all LLM prompts
+- **Google Auth** — Restricted to @muehlemann-popp.ch domain
+- **PDF export** — Meeting minutes as printable PDF
+- **Persistent settings** — Saved in localStorage across sessions
+- **Browser language detection** — Auto-selects DE or EN
 
 ---
 
-*Erstellt am 2026-03-21 | Commit: ce966ec*
+*Updated 2026-03-26 | Commit: b0a49e3*
