@@ -70,6 +70,19 @@ const translations = {
     loginError: "Anmeldung fehlgeschlagen. Bitte erneut versuchen.",
     loginButton: "Mit Google anmelden",
     loading: "Laden...",
+    // Mode
+    mode: "Modus",
+    modeDebate: "Debatte",
+    modeNegotiation: "Verhandlung",
+    privateContextLabel: "Private Information",
+    privateContextHelp: "Nur für diesen Agenten sichtbar (BATNA, Red Lines, versteckte Ziele)",
+    walkedAway: "hat die Verhandlung verlassen",
+    startNegotiation: "Verhandlung starten",
+    negotiationEnded: "Verhandlung beendet",
+    agreementStatus: "Einigungsstatus",
+    keyTerms: "Vereinbarte Bedingungen",
+    concessionsMade: "Zugeständnisse",
+    unresolvedPoints: "Offene Punkte",
   },
   en: {
     // Setup
@@ -136,6 +149,19 @@ const translations = {
     loginError: "Login failed. Please try again.",
     loginButton: "Sign in with Google",
     loading: "Loading...",
+    // Mode
+    mode: "Mode",
+    modeDebate: "Debate",
+    modeNegotiation: "Negotiation",
+    privateContextLabel: "Private Information",
+    privateContextHelp: "Only visible to this agent (BATNA, red lines, hidden goals)",
+    walkedAway: "walked away from the negotiation",
+    startNegotiation: "Start Negotiation",
+    negotiationEnded: "Negotiation ended",
+    agreementStatus: "Agreement Status",
+    keyTerms: "Key Terms",
+    concessionsMade: "Concessions Made",
+    unresolvedPoints: "Unresolved Points",
   },
 } as const;
 

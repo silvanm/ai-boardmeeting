@@ -9,11 +9,12 @@ import { useLocale } from "@/lib/i18n";
 interface AgentListProps {
   agents: Agent[];
   onChange: (agents: Agent[]) => void;
+  showPrivateContext?: boolean;
 }
 
 const COLORS = ["#e11d48", "#2563eb", "#16a34a", "#9333ea", "#ea580c", "#0891b2", "#ca8a04", "#dc2626"];
 
-export function AgentList({ agents, onChange }: AgentListProps) {
+export function AgentList({ agents, onChange, showPrivateContext }: AgentListProps) {
   const { t } = useLocale();
   const addAgent = () => {
     const id = `agent-${Date.now()}`;
@@ -40,6 +41,7 @@ export function AgentList({ agents, onChange }: AgentListProps) {
           onChange={(a) => updateAgent(i, a)}
           onRemove={() => removeAgent(i)}
           canRemove={agents.length > 2}
+          showPrivateContext={showPrivateContext}
         />
       ))}
       {agents.length < 8 && (

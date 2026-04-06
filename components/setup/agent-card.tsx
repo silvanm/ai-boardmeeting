@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Trash2, Lock } from "lucide-react";
 import { useLocale } from "@/lib/i18n";
 
 interface AgentCardProps {
@@ -14,9 +14,10 @@ interface AgentCardProps {
   onChange: (agent: Agent) => void;
   onRemove: () => void;
   canRemove: boolean;
+  showPrivateContext?: boolean;
 }
 
-export function AgentCard({ agent, onChange, onRemove, canRemove }: AgentCardProps) {
+export function AgentCard({ agent, onChange, onRemove, canRemove, showPrivateContext }: AgentCardProps) {
   const { t } = useLocale();
   return (
     <Card className="relative" style={{ borderLeftColor: agent.color, borderLeftWidth: 4 }}>
@@ -63,6 +64,22 @@ export function AgentCard({ agent, onChange, onRemove, canRemove }: AgentCardPro
             rows={2}
           />
         </div>
+        {showPrivateContext && (
+          <div className="space-y-1">
+            <div className="flex items-center gap-1.5">
+              <Lock className="h-3.5 w-3.5 text-muted-foreground" />
+              <Label htmlFor={`private-${agent.id}`}>{t("privateContextLabel")}</Label>
+            </div>
+            <p className="text-xs text-muted-foreground">{t("privateContextHelp")}</p>
+            <Textarea
+              id={`private-${agent.id}`}
+              value={agent.privateContext || ""}
+              onChange={(e) => onChange({ ...agent, privateContext: e.target.value })}
+              rows={4}
+              className="border-dashed"
+            />
+          </div>
+        )}
       </CardContent>
     </Card>
   );

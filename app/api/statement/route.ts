@@ -1,22 +1,23 @@
 import { NextRequest } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
-import { DebateConfig, DebateMessage, EmotionalState, IntensityResult } from "@/lib/types";
+import { DebateConfig, DebateMessage, EmotionalState, IntensityResult, Proposal } from "@/lib/types";
 import { buildStatementPrompt } from "@/lib/prompts";
 
 const client = new Anthropic();
 
 export async function POST(req: NextRequest) {
   try {
-    const { config, history, speaker, intensities, emotions, currentRound } = (await req.json()) as {
+    const { config, history, speaker, intensities, emotions, currentRound, proposals } = (await req.json()) as {
       config: DebateConfig;
       history: DebateMessage[];
-      speaker: { id: string; name: string; role: string; character: string; color: string };
+      speaker: { id: string; name: string; role: string; character: string; color: string; privateContext?: string };
       intensities: IntensityResult[];
       emotions: EmotionalState[];
       currentRound: number;
+      proposals?: Proposal[];
     };
 
-    const { system, user } = buildStatementPrompt(speaker, config, history, intensities, emotions || [], currentRound || 1);
+    const { system, user } = buildStatementPrompt(speaker, config, history, intensities, emotions || [], currentRound || 1, proposals);
 
     const stream = client.messages.stream({
       model: config.model,

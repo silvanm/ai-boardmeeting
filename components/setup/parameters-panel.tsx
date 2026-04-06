@@ -12,13 +12,27 @@ interface ParametersPanelProps {
   model: string;
   contributionLength: "kurz" | "normal" | "lang";
   webSearch: boolean;
-  onChange: (params: { maxRounds: number; silenceThreshold: number; decayPenalty: number; model: string; contributionLength: "kurz" | "normal" | "lang"; webSearch: boolean }) => void;
+  mode?: "debate" | "negotiation";
+  onChange: (params: { maxRounds: number; silenceThreshold: number; decayPenalty: number; model: string; contributionLength: "kurz" | "normal" | "lang"; webSearch: boolean; mode?: "debate" | "negotiation" }) => void;
 }
 
-export function ParametersPanel({ maxRounds, silenceThreshold, decayPenalty, model, contributionLength, webSearch, onChange }: ParametersPanelProps) {
+export function ParametersPanel({ maxRounds, silenceThreshold, decayPenalty, model, contributionLength, webSearch, mode, onChange }: ParametersPanelProps) {
   const { t } = useLocale();
   return (
     <div className="space-y-5">
+      <div className="space-y-2">
+        <Label>{t("mode")}</Label>
+        <Select value={mode || "debate"} onValueChange={(v) => onChange({ maxRounds, silenceThreshold, decayPenalty, model, contributionLength, webSearch, mode: v as "debate" | "negotiation" })}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="debate">{t("modeDebate")}</SelectItem>
+            <SelectItem value="negotiation">{t("modeNegotiation")}</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="space-y-2">
         <div className="flex justify-between">
           <Label>{t("maxRounds")}</Label>

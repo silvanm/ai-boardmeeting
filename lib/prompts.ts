@@ -1,4 +1,4 @@
-import { Agent, DebateConfig, DebateMessage, EmotionalState, IntensityResult } from "./types";
+import { Agent, DebateConfig, DebateMessage, EmotionalState, IntensityResult, Proposal } from "./types";
 
 export interface StructuredPrompt {
   system: string;
@@ -42,6 +42,15 @@ const promptText = {
     lengthShort: "Richtwert: 1-2 Sätze. Fasse dich extrem kurz. Selbst redselige Typen nutzen maximal 2-3 Sätze.",
     lengthLong: "Richtwert: 5-8 Sätze. Du darfst ausführlicher argumentieren. Wortkargen Typen reichen 3-4 Sätze, redselige dürfen 8-10 Sätze nutzen.",
     lengthNormal: "Richtwert: 3-4 Sätze. Dein Charakter kann davon abweichen — wortkargen Typen reichen 1-2 Sätze, redselige dürfen 5-6 Sätze nutzen.",
+    // Negotiation mode
+    negotiationTask: "Deine Aufgabe: Du bist in einer echten Verhandlung. Bewerte, wie stark du dich zu Wort melden willst (1-10), reflektiere deinen emotionalen Zustand und deine Strategie. Überlege: Welche Information solltest du jetzt preisgeben? Was hältst du zurück? Ist jetzt der richtige Moment für ein Angebot oder Gegenangebot?",
+    privateInfo: "DEINE PRIVATE INFORMATION (nur du weisst das — gib diese Details NICHT direkt preis):",
+    walkAwayOption: "Wenn deine roten Linien überschritten wurden und du keinen Weg zu einer Einigung siehst, setze walkAway auf true um die Verhandlung zu beenden.",
+    proposalInstruction: "Wenn du ein konkretes Angebot machen willst, formuliere es klar mit spezifischen Bedingungen (z.B. Zahlen, Fristen, Konditionen). Wenn du auf ein bestehendes Angebot reagierst, sage klar ob du es annimmst, ablehnst oder ein Gegenangebot machst.",
+    strategicThinking: "Denke strategisch: Was wurde bisher preisgegeben? Was verbergen die anderen wahrscheinlich? Welche Hebel hast du? Wann ist der richtige Moment für Zugeständnisse?",
+    negotiationRules: "Verhandle wie in einer echten Verhandlung — sei strategisch, nicht nur diskussionsfreudig. Du darfst bluffen, übertreiben oder Informationen zurückhalten.",
+    openProposals: "Aktuelle Vorschläge auf dem Tisch:",
+    noProposals: "Es liegen noch keine konkreten Vorschläge vor.",
   },
   en: {
     youAre: (name: string, role: string) => `You are ${name}, ${role}.`,
@@ -79,6 +88,15 @@ const promptText = {
     lengthShort: "Guideline: 1-2 sentences. Keep it extremely brief. Even talkative types use at most 2-3 sentences.",
     lengthLong: "Guideline: 5-8 sentences. You may argue in more detail. Quiet types need 3-4 sentences, talkative ones may use 8-10.",
     lengthNormal: "Guideline: 3-4 sentences. Your character may deviate — quiet types need 1-2 sentences, talkative ones may use 5-6.",
+    // Negotiation mode
+    negotiationTask: "Your task: You are in a real negotiation. Rate how strongly you want to speak (1-10), reflect on your emotional state and your strategy. Consider: What information should you reveal now? What should you hold back? Is now the right moment to make or respond to a proposal?",
+    privateInfo: "YOUR PRIVATE INFORMATION (only you know this — do NOT directly reveal these details):",
+    walkAwayOption: "If your red lines have been crossed and you see no path to agreement, set walkAway to true to end the negotiation.",
+    proposalInstruction: "If you want to make a concrete proposal, state it clearly with specific terms (e.g. numbers, timelines, conditions). If responding to an existing proposal, state clearly whether you accept, reject, or counter it.",
+    strategicThinking: "Think strategically: What has been revealed so far? What are the other parties likely hiding? What leverage do you have? When is the right moment for concessions?",
+    negotiationRules: "Negotiate as in a real negotiation — be strategic, not just conversational. You may bluff, exaggerate, or withhold information.",
+    openProposals: "Current proposals on the table:",
+    noProposals: "No concrete proposals have been made yet.",
   },
 };
 
@@ -91,17 +109,28 @@ export function buildIntensityPrompt(
 ): StructuredPrompt {
   const lang = config.locale === "en" ? "en" : "de";
   const p = promptText[lang];
+  const isNegotiation = config.mode === "negotiation";
+
+  const privateContext = isNegotiation && agent.privateContext
+    ? `\n${p.privateInfo}\n${agent.privateContext}\n`
+    : "";
+
+  const taskDescription = isNegotiation ? p.negotiationTask : p.intensityTask;
+
+  const walkAwayField = isNegotiation
+    ? `, "walkAway": <true|false>`
+    : "";
 
   const system = `${p.youAre(agent.name, agent.role)}
 ${p.yourCharacter} ${agent.character}
-
+${privateContext}
 ${p.discussionTopic} ${config.topic}
 ${p.goal} ${config.goal}
 ${config.context ? `\n${p.background}\n${config.context}\n` : ""}
-${p.intensityTask}
-
+${taskDescription}
+${isNegotiation ? `\n${p.walkAwayOption}\n` : ""}
 ${p.replyJson}
-{"score": <1-10>, "reasoning": "<${lang === "de" ? "kurze Begründung in einem Satz" : "brief reasoning in one sentence"}>", "mood": "<${p.moodExample}>", "stances": [${config.agents.filter((a) => a.id !== agent.id).map((a) => `{"towards": "${a.id}", "feeling": "<${p.stanceOptions}>"}`).join(", ")}]}`;
+{"score": <1-10>, "reasoning": "<${lang === "de" ? "kurze Begründung in einem Satz" : "brief reasoning in one sentence"}>", "mood": "<${p.moodExample}>", "stances": [${config.agents.filter((a) => a.id !== agent.id).map((a) => `{"towards": "${a.id}", "feeling": "<${p.stanceOptions}>"}`).join(", ")}]${walkAwayField}}`;
 
   const transcript = history
     .map((m) => `[${m.agentName} (${getRoleForAgent(m.agentId, config)})]: ${m.content}`)
@@ -145,14 +174,24 @@ export function buildStatementPrompt(
   history: DebateMessage[],
   intensities: IntensityResult[],
   emotions: EmotionalState[],
-  currentRound: number
+  currentRound: number,
+  proposals?: Proposal[]
 ): StructuredPrompt {
   const lang = config.locale === "en" ? "en" : "de";
   const p = promptText[lang];
+  const isNegotiation = config.mode === "negotiation";
+
+  const privateContext = isNegotiation && agent.privateContext
+    ? `\n${p.privateInfo}\n${agent.privateContext}\n`
+    : "";
+
+  const negotiationRules = isNegotiation
+    ? `- ${p.strategicThinking}\n- ${p.proposalInstruction}\n- ${p.negotiationRules}`
+    : "";
 
   const system = `${p.youAre(agent.name, agent.role)}
 ${p.yourCharacter} ${agent.character}
-
+${privateContext}
 ${p.topic} ${config.topic}
 ${p.goal} ${config.goal}
 ${config.context ? `\n${p.background}\n${config.context}\n` : ""}
@@ -162,7 +201,8 @@ ${p.rulesTitle}
 - ${p.referPrevious}
 - ${getLengthGuideline(config.contributionLength, lang)}
 - ${p.speakLanguage}
-- ${p.noMarkdown}`;
+- ${p.noMarkdown}
+${negotiationRules}`;
 
   const transcript = history
     .map((m) => `[${m.agentName} (${getRoleForAgent(m.agentId, config)})]: ${m.content}`)
@@ -176,13 +216,26 @@ ${p.rulesTitle}
       }).join("\n")}\n`
     : "";
 
-  const othersIntensity = intensities
-    .filter((i) => i.agentId !== agent.id)
-    .map((i) => {
-      const a = config.agents.find((a) => a.id === i.agentId);
-      return `${a?.name} (${p.mood}: ${i.mood}): ${i.reasoning}`;
-    })
-    .join("\n");
+  // In negotiation mode, hide other agents' emotions/reasoning — infer from transcript only
+  const othersSection = isNegotiation
+    ? ""
+    : `${p.othersThinking}\n${intensities
+        .filter((i) => i.agentId !== agent.id)
+        .map((i) => {
+          const a = config.agents.find((a) => a.id === i.agentId);
+          return `${a?.name} (${p.mood}: ${i.mood}): ${i.reasoning}`;
+        })
+        .join("\n")}\n`;
+
+  // In negotiation mode, show open proposals
+  const proposalSection = isNegotiation && proposals
+    ? `\n${proposals.length > 0
+        ? `${p.openProposals}\n${proposals.filter((pr) => pr.status === "open").map((pr) => {
+            const from = config.agents.find((a) => a.id === pr.fromAgentId);
+            return `- ${from?.name} (Runde ${pr.round}): ${pr.terms}`;
+          }).join("\n") || p.noProposals}`
+        : p.noProposals}\n`
+    : "";
 
   const progress = currentRound / config.maxRounds;
   let timePressure = "";
@@ -198,9 +251,7 @@ ${
   history.length > 0
     ? `${p.previousDiscussion}\n${transcript}\n\n`
     : p.youOpenDiscussion
-}${p.othersThinking}
-${othersIntensity}
-
+}${othersSection}${proposalSection}
 ${p.yourTurn}`;
 
   return { system, user };

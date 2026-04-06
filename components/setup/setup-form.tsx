@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Play, RotateCcw, Globe } from "lucide-react";
+import { Play, RotateCcw, Globe, Handshake } from "lucide-react";
 import { useLocale } from "@/lib/i18n";
 
 export function SetupForm() {
@@ -27,14 +27,14 @@ export function SetupForm() {
     return getDefaultConfig(locale);
   });
   const [currentScenarios, setCurrentScenarios] = useState<Scenario[]>(getScenarios(locale));
-  const [selectedScenario, setSelectedScenario] = useState<string>(currentScenarios[currentScenarios.length - 1].id);
+  const [selectedScenario, setSelectedScenario] = useState<string>(currentScenarios[0].id);
 
   useEffect(() => {
     const newScenarios = getScenarios(locale);
     const newConfig = getDefaultConfig(locale);
     setCurrentScenarios(newScenarios);
     setConfig(newConfig);
-    setSelectedScenario(newScenarios[newScenarios.length - 1].id);
+    setSelectedScenario(newScenarios[0].id);
   }, [locale]);
 
   const loadDefaults = () => {
@@ -52,7 +52,8 @@ export function SetupForm() {
         topic: scenario.topic,
         goal: scenario.goal,
         context: scenario.context,
-        agents: getDefaultAgents(locale),
+        agents: scenario.agents || getDefaultAgents(locale),
+        mode: scenario.mode || "debate",
       });
     }
   };
@@ -98,13 +99,25 @@ export function SetupForm() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex gap-2 flex-wrap">
-            {currentScenarios.map((s) => (
+            {currentScenarios.filter((s) => s.mode !== "negotiation").map((s) => (
               <Button
                 key={s.id}
                 variant={selectedScenario === s.id ? "default" : "outline"}
                 size="sm"
                 onClick={() => selectScenario(s.id)}
               >
+                {s.title}
+              </Button>
+            ))}
+            {currentScenarios.filter((s) => s.mode === "negotiation").map((s) => (
+              <Button
+                key={s.id}
+                variant={selectedScenario === s.id ? "default" : "secondary"}
+                size="sm"
+                onClick={() => selectScenario(s.id)}
+                className={selectedScenario === s.id ? "" : "border border-dashed border-muted-foreground/40"}
+              >
+                <Handshake className="h-3.5 w-3.5 mr-1" />
                 {s.title}
               </Button>
             ))}
@@ -155,7 +168,7 @@ export function SetupForm() {
           <CardTitle>{t("participants")}</CardTitle>
         </CardHeader>
         <CardContent>
-          <AgentList agents={config.agents} onChange={(agents) => setConfig({ ...config, agents })} />
+          <AgentList agents={config.agents} onChange={(agents) => setConfig({ ...config, agents })} showPrivateContext={config.mode === "negotiation"} />
         </CardContent>
       </Card>
 
@@ -171,13 +184,14 @@ export function SetupForm() {
             model={config.model}
             contributionLength={config.contributionLength}
             webSearch={config.webSearch}
+            mode={config.mode}
             onChange={(params) => setConfig({ ...config, ...params })}
           />
         </CardContent>
       </Card>
 
       <Button onClick={startDebate} disabled={!isValid} size="lg" className="w-full">
-        <Play className="h-5 w-5 mr-2" /> {t("startDebate")}
+        <Play className="h-5 w-5 mr-2" /> {config.mode === "negotiation" ? t("startNegotiation") : t("startDebate")}
       </Button>
     </div>
   );

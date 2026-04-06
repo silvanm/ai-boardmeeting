@@ -4,6 +4,7 @@ export interface Agent {
   role: string;
   character: string;
   color: string;
+  privateContext?: string;
 }
 
 export interface DebateConfig {
@@ -18,6 +19,7 @@ export interface DebateConfig {
   contributionLength: "kurz" | "normal" | "lang";
   webSearch: boolean;
   locale: "de" | "en";
+  mode?: "debate" | "negotiation";
 }
 
 export interface AgentStance {
@@ -38,6 +40,23 @@ export interface IntensityResult {
   effectiveScore: number;
   mood: string;
   stances: AgentStance[];
+  walkAway?: boolean;
+}
+
+export interface Proposal {
+  id: string;
+  round: number;
+  fromAgentId: string;
+  terms: string;
+  status: "open" | "accepted" | "rejected" | "countered";
+  responses: ProposalResponse[];
+}
+
+export interface ProposalResponse {
+  agentId: string;
+  action: "accept" | "reject" | "counter";
+  counterTerms?: string;
+  round: number;
 }
 
 export interface DebateMessage {
@@ -70,4 +89,6 @@ export interface DebateState {
   emotions: EmotionalState[];
   emojis: Record<string, string>; // agentId -> emoji codepoint
   lastSpeakerId: string | null;
+  proposals: Proposal[];
+  walkedAway: { agentId: string; round: number } | null;
 }

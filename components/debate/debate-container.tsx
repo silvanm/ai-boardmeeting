@@ -11,7 +11,7 @@ import { RoundIndicator } from "./round-indicator";
 import { DebateControls } from "./debate-controls";
 import { DebateSummary } from "./debate-summary";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, DoorOpen } from "lucide-react";
 import { useLocale } from "@/lib/i18n";
 
 export function DebateContainer() {
@@ -41,8 +41,13 @@ export function DebateContainer() {
 
 function DebateView({ config }: { config: DebateConfig }) {
   const router = useRouter();
+  const { t } = useLocale();
   const { state, streamingText, streamingSpeaker, start, pause, resume, stop } =
     useDebate(config);
+
+  const walkedAwayAgent = state.walkedAway
+    ? config.agents.find((a) => a.id === state.walkedAway!.agentId)
+    : null;
 
   const startedRef = useRef(false);
   useEffect(() => {
@@ -89,6 +94,14 @@ function DebateView({ config }: { config: DebateConfig }) {
           />
         </div>
       </div>
+
+      {/* Walk-away banner */}
+      {walkedAwayAgent && (
+        <div className="bg-red-50 border-b border-red-200 px-4 py-3 flex items-center gap-2 text-red-800 shrink-0">
+          <DoorOpen className="h-5 w-5" />
+          <span className="font-semibold">{walkedAwayAgent.name}</span> {t("walkedAway")}
+        </div>
+      )}
 
       {/* Main content */}
       <div className="flex-1 flex overflow-hidden">

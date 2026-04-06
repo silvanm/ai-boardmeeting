@@ -8,8 +8,10 @@ import {
   IntensityResult,
   EmotionalState,
   DebateStatus,
+  Proposal,
 } from "@/lib/types";
 import { getFallbackEmoji } from "@/lib/emoji-map";
+import { extractProposal, extractProposalResponse, updateProposals } from "@/lib/proposals";
 
 const initialState: DebateState = {
   status: "idle",
@@ -20,6 +22,8 @@ const initialState: DebateState = {
   emotions: [],
   emojis: {},
   lastSpeakerId: null,
+  proposals: [],
+  walkedAway: null,
 };
 
 export function useDebate(config: DebateConfig) {
@@ -97,7 +101,17 @@ export function useDebate(config: DebateConfig) {
           .catch(() => {}); // silently ignore — fallback emojis are already set
       }
 
-      // 2. Check silence threshold
+      // 2a. Check walk-away (negotiation mode)
+      if (config.mode === "negotiation") {
+        const walker = intensities.find((i) => i.walkAway);
+        if (walker) {
+          const walkedAway = { agentId: walker.agentId, round: roundNum };
+          setState((s) => ({ ...s, walkedAway }));
+          return { messages, lastSpeakerId, emotions: updatedEmotions, ended: true };
+        }
+      }
+
+      // 2b. Check silence threshold
       if (intensities.every((i) => i.effectiveScore < config.silenceThreshold)) {
         return { messages, lastSpeakerId, emotions: updatedEmotions, ended: true };
       }
@@ -111,6 +125,10 @@ export function useDebate(config: DebateConfig) {
       setStreamingText("");
 
       // 4. Stream statement
+      const currentProposals = (await new Promise<Proposal[]>((resolve) => {
+        setState((s) => { resolve(s.proposals); return s; });
+      }));
+
       const stmtResponse = await fetch("/api/statement", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -121,6 +139,7 @@ export function useDebate(config: DebateConfig) {
           intensities,
           emotions: updatedEmotions,
           currentRound: roundNum,
+          proposals: currentProposals,
         }),
       });
 
@@ -158,6 +177,28 @@ export function useDebate(config: DebateConfig) {
 
       setStreamingSpeaker(null);
       setStreamingText("");
+
+      // Extract proposals in negotiation mode
+      if (config.mode === "negotiation" && fullText) {
+        const newProposal = extractProposal(fullText, agentDef.id, roundNum);
+        const response = extractProposalResponse(fullText, agentDef.id, roundNum, currentProposals);
+
+        setState((s) => {
+          let updatedProposals = s.proposals;
+          if (newProposal) {
+            updatedProposals = [...updatedProposals, newProposal];
+          }
+          if (response) {
+            const openProposal = updatedProposals.find(
+              (p) => p.status === "open" && p.fromAgentId !== agentDef.id
+            );
+            if (openProposal) {
+              updatedProposals = updateProposals(updatedProposals, openProposal.id, response);
+            }
+          }
+          return { ...s, proposals: updatedProposals };
+        });
+      }
 
       const newMessage: DebateMessage = {
         id: `msg-${roundNum}-${agentDef.id}`,

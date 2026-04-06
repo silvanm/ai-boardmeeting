@@ -40,6 +40,7 @@ export async function POST(req: NextRequest) {
         let reasoning = "";
         let mood = "neutral";
         let stances: AgentStance[] = [];
+        let walkAway = false;
 
         try {
           const parsed = JSON.parse(text);
@@ -50,21 +51,24 @@ export async function POST(req: NextRequest) {
             towards: s.towards,
             feeling: s.feeling,
           }));
+          walkAway = parsed.walkAway === true;
         } catch {
           // Regex fallback
           const scoreMatch = text.match(/"score"\s*:\s*(\d+)/);
           const reasonMatch = text.match(/"reasoning"\s*:\s*"([^"]+)"/);
           const moodMatch = text.match(/"mood"\s*:\s*"([^"]+)"/);
+          const walkAwayMatch = text.match(/"walkAway"\s*:\s*true/);
           if (scoreMatch) score = parseInt(scoreMatch[1], 10);
           if (reasonMatch) reasoning = reasonMatch[1];
           if (moodMatch) mood = moodMatch[1];
+          if (walkAwayMatch) walkAway = true;
         }
 
         score = Math.max(1, Math.min(10, score));
         const penalty = agent.id === lastSpeakerId ? config.decayPenalty : 0;
         const effectiveScore = Math.max(0, score - penalty);
 
-        return { agentId: agent.id, score, reasoning, effectiveScore, mood, stances };
+        return { agentId: agent.id, score, reasoning, effectiveScore, mood, stances, walkAway };
       })
     );
 

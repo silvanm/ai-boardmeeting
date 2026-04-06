@@ -16,8 +16,62 @@ export async function POST(req: NextRequest) {
       .join("\n\n");
 
     const isEn = config.locale === "en";
-    const prompt = isEn
-      ? `You are a neutral minute-taker. Summarize the following board meeting.
+    const isNegotiation = config.mode === "negotiation";
+
+    let prompt: string;
+    if (isNegotiation) {
+      prompt = isEn
+        ? `You are a neutral analyst summarizing the following negotiation.
+
+Topic: ${config.topic}
+Goal: ${config.goal}
+Participants: ${config.agents.map((a) => `${a.name} (${a.role})`).join(", ")}
+
+Transcript:
+${transcript}
+
+Create a negotiation summary with the following structure in Markdown:
+
+## Agreement Status
+Was an agreement reached? If so, summarize the final terms. If not, explain why.
+
+## Key Terms
+What specific terms were agreed upon or proposed? (Bullet points)
+
+## Concessions Made
+Who conceded what during the negotiation? (Bullet points with **Name** in bold)
+
+## Unresolved Points
+What remains unresolved or was left for future discussion?
+
+Write in clear, professional language. Use Markdown formatting (##, -, **bold**). Write in English.`
+        : `Du bist ein neutraler Analyst, der die folgende Verhandlung zusammenfasst.
+
+Thema: ${config.topic}
+Ziel: ${config.goal}
+Teilnehmer: ${config.agents.map((a) => `${a.name} (${a.role})`).join(", ")}
+
+Verlauf:
+${transcript}
+
+Erstelle eine Verhandlungszusammenfassung mit folgender Struktur in Markdown:
+
+## Einigungsstatus
+Wurde eine Einigung erzielt? Wenn ja, fasse die finalen Bedingungen zusammen. Wenn nein, erkläre warum.
+
+## Vereinbarte Bedingungen
+Welche konkreten Bedingungen wurden vereinbart oder vorgeschlagen? (Bullet Points)
+
+## Zugeständnisse
+Wer hat welche Zugeständnisse gemacht? (Bullet Points mit **Name** fett)
+
+## Offene Punkte
+Was bleibt ungeklärt oder wurde auf später verschoben?
+
+Schreibe in klarer, professioneller Sprache. Verwende Markdown-Formatierung (##, -, **fett**). Sprich Deutsch.`;
+    } else {
+      prompt = isEn
+        ? `You are a neutral minute-taker. Summarize the following board meeting.
 
 Topic: ${config.topic}
 Goal: ${config.goal}
@@ -38,7 +92,7 @@ Who does what? (Bullet points with **Name** in bold)
 What still needs to be clarified?
 
 Write in clear, professional language. Use Markdown formatting (##, -, **bold**). Write in English.`
-      : `Du bist ein neutraler Protokollführer. Fasse das folgende GL-Meeting zusammen.
+        : `Du bist ein neutraler Protokollführer. Fasse das folgende GL-Meeting zusammen.
 
 Thema: ${config.topic}
 Ziel: ${config.goal}
@@ -59,6 +113,7 @@ Wer macht was? (Bullet Points mit **Name** fett)
 Was muss noch geklärt werden?
 
 Schreibe in klarer, professioneller Sprache. Verwende Markdown-Formatierung (##, -, **fett**). Sprich Deutsch.`;
+    }
 
     const stream = client.messages.stream({
       model: config.model,
