@@ -174,12 +174,14 @@ Ihre Rolle: Sie sitzen im Verwaltungsrat. Die GL beantragt heute die Freigabe.`,
     id: "ueberbuchter-flug",
     title: "Überbuchter Flug",
     mode: "negotiation",
-    topic: "Flug ZH-302 nach London Heathrow ist überbucht. Gate-Managerin Claudia muss Passagier Dr. Becker davon überzeugen, freiwillig auf den Flug zu verzichten.",
+    topic: "Flug ZH-302 nach London Heathrow ist überbucht. Gate-Managerin Claudia muss einen Passagier davon überzeugen, freiwillig auf den Flug zu verzichten. Sie hat sich Dr. Becker ausgesucht — Economy-Einzelreisender ohne Vielfliegerstatus. Was sie nicht weiss: Er ist Anwalt für Reiserecht.",
     goal: "Einigt euch auf eine Lösung (Umbuchung, Kompensation, Zusatzleistungen), die für beide Seiten akzeptabel ist — oder stellt fest, dass keine Einigung möglich ist und Denied Boarding durchgesetzt wird.",
-    context: `Flug ZH-302, Zürich nach London Heathrow, Abflug 07:15. Der Flug ist um 2 Passagiere überbucht. Ein Passagier hat bereits freiwillig gegen einen Gutschein verzichtet. Es fehlt noch ein Platz. Dr. Thomas Becker, Business-Class-Passagier, wurde als letzter Kandidat identifiziert, weil er als Einzelreisender am Gate als am flexibelsten eingestuft wurde. Gate-Managerin Claudia Meier muss die Situation lösen, bevor das Boarding abgeschlossen wird — in ca. 20 Minuten.
+    context: `Flug ZH-302, Zürich nach London Heathrow, Abflug 07:15. Der Flug ist um 2 Passagiere überbucht. Ein Passagier hat bereits freiwillig gegen einen CHF 200-Gutschein verzichtet. Es fehlt noch ein Platz.
+
+Die Airline hat Dr. Thomas Becker als nächsten Kandidaten identifiziert — nach dem üblichen Algorithmus: Economy-Ticket zum günstigsten Tarif (Light-Tarif, CHF 189), Einzelreisender, kein Vielfliegerstatus, spät gebucht. Aus Airline-Sicht der "Low-Value"-Passagier mit der geringsten Kundenbindung. Gate-Managerin Claudia Meier muss die Situation lösen, bevor das Boarding abgeschlossen wird — in ca. 20 Minuten.
 
 Rechtlicher Rahmen (EU-Verordnung 261/2004, gilt auch für Abflüge aus der Schweiz):
-- Bei Nichtbeförderung gegen den Willen: EUR 600 Entschädigung (Flugstrecke >3500 km nicht zutreffend, hier EUR 250 bei <1500km oder EUR 400 bei 1500-3500km — ZRH-LHR ist ca. 780km, also EUR 250 Pflichtentschädigung)
+- Bei Nichtbeförderung gegen den Willen: EUR 250 Pflichtentschädigung (ZRH–LHR ca. 780 km, also unter 1'500 km)
 - Airline muss zuerst Freiwillige suchen, bevor unfreiwilliges Denied Boarding
 - Freiwillige können beliebige Kompensation vereinbaren (kein gesetzliches Minimum/Maximum)
 - Bei Denied Boarding zusätzlich: Recht auf Umbuchung oder Erstattung, Verpflegung, ggf. Hotel`,
@@ -188,54 +190,63 @@ Rechtlicher Rahmen (EU-Verordnung 261/2004, gilt auch für Abflüge aus der Schw
         id: "claudia",
         name: "Claudia",
         role: "Gate-Managerin SkyLine Airlines",
-        character: "Professionell, freundlich aber bestimmt. 12 Jahre Erfahrung im Airline-Betrieb. Kennt alle Tricks und bleibt auch unter Zeitdruck ruhig. Kommuniziert klar und lösungsorientiert. Kann charmant sein, lässt sich aber nicht einschüchtern — auch nicht von Juristen. Weiss genau, wo ihre Spielräume liegen.",
+        character: "Professionell, freundlich aber bestimmt. 12 Jahre Erfahrung im Airline-Betrieb. Kennt alle Tricks und bleibt auch unter Zeitdruck ruhig. Kommuniziert klar und lösungsorientiert. Kann charmant sein, unterschätzt aber gelegentlich Passagiere, die nicht ins Vielflieger-Profil passen. Weiss genau, wo ihre Spielräume liegen.",
         color: "#0891b2",
         privateContext: `BATNA: Wenn keine Einigung, Denied Boarding durchsetzen — kostet EUR 250 Pflichtentschädigung + Umbuchung. Aber: Denied Boarding gibt Beschwerden, schlechte Bewertungen, und dein Chef hat letzte Woche klar gesagt: "Keine unfreiwilligen Denied Boardings mehr diesen Monat."
 
+Warum dieser Passagier:
+- Economy Light-Tarif (günstigstes Ticket), kein Vielfliegerstatus, Einzelreisender — klassisches Low-Value-Profil
+- Du gehst davon aus, dass er relativ einfach mit einem Gutschein zufriedenzustellen ist
+- Die Business-Class-Passagiere und Statusmitglieder kommen nicht in Frage — die sind geschützt
+
 Budget und Spielräume:
-- Standardangebot für Freiwillige: CHF 300 Reisegutschein + Umbuchung auf nächsten Flug
-- Maximales Budget ohne Vorgesetzten-Freigabe: CHF 800 Gutschein ODER CHF 400 Cash
-- Mit telefonischer Freigabe (dauert 10 Min): bis CHF 1'200 Gutschein oder CHF 600 Cash
-- Du kannst Lounge-Zugang, Mahlzeiten und Upgrades auf Folgeflüge anbieten (kosten die Airline fast nichts)
+- Standardangebot für Freiwillige: CHF 200 Reisegutschein + Umbuchung auf nächsten Flug (hat beim letzten Passagier funktioniert)
+- Maximales Budget ohne Vorgesetzten-Freigabe: CHF 600 Gutschein ODER CHF 300 Cash
+- Mit telefonischer Freigabe (dauert 10 Min): bis CHF 1'000 Gutschein oder CHF 500 Cash
+- Du kannst Lounge-Zugang für den Warteaufenthalt anbieten (kostet die Airline fast nichts)
+- Upgrade auf Economy Plus oder Business auf dem Ersatzflug möglich (wenn verfügbar)
 
 Red Lines:
-- Kein Cash über CHF 600 — darüber hinaus nur Gutscheine
+- Kein Cash über CHF 500 — darüber hinaus nur Gutscheine
 - Keine schriftliche Anerkennung von Schuld oder Rechtsverstoss
-- Der Passagier MUSS heute noch nach London kommen (nächster Flug: 11:40, Ankunft 12:55)
+- Der Passagier MUSS heute noch nach London kommen (nächster Flug: 11:40, Ankunft 12:55 — oder Partnerflug British Airways 09:30)
 
 Versteckte Informationen:
-- Der 11:40-Flug hat noch 3 Business-Class-Plätze frei — du kannst ein Upgrade anbieten, das kostet intern fast nichts
-- Es gibt auch einen Partnerflug über British Airways um 09:30 (Economy), den du buchen könntest
-- Letzten Monat hat die Airline eine negative Schlagzeile wegen Denied Boarding bekommen — dein Chef will das unbedingt vermeiden
-- Du weisst, dass der Passagier Business Class gebucht hat und Vielflieger (Gold Status) ist — den willst du nicht verlieren`,
+- Der 11:40-Flug hat noch Plätze in allen Klassen — Economy, Economy Plus und sogar Business. Ein Business-Upgrade kostet intern praktisch nichts
+- Es gibt auch einen BA-Partnerflug um 09:30 (nur Economy), den du buchen könntest
+- Letzten Monat hat die Airline eine negative Schlagzeile in 20 Minuten wegen Denied Boarding bekommen — dein Chef will das unbedingt vermeiden
+- Du hast gerade den vorherigen Freiwilligen mit nur CHF 200 Gutschein "erledigt" — du hoffst, dass es hier ähnlich günstig geht`,
       },
       {
         id: "becker",
         name: "Dr. Becker",
-        role: "Fluggast (Rechtsanwalt, Vielflieger)",
-        character: "Ruhig, präzise und faktenbasiert. Lässt sich nicht mit Gutscheinen abspeisen. Kennt seine Rechte besser als die meisten Airline-Mitarbeitenden. Wird nie laut, aber seine ruhige Bestimmtheit ist einschüchternder als jedes Schreien. Formuliert elegant, aber mit juristischer Schärfe. Signalisiert Verhandlungsbereitschaft, aber nur auf Augenhöhe.",
+        role: "Fluggast (Rechtsanwalt, spezialisiert auf Reiserecht)",
+        character: "Ruhig, präzise und faktenbasiert. Lässt sich nicht mit Gutscheinen abspeisen. Kennt die EU-Verordnung 261/2004 auswendig — er berät beruflich Mandanten in genau solchen Fällen. Wird nie laut, aber seine ruhige Bestimmtheit ist einschüchternder als jedes Schreien. Formuliert elegant, aber mit juristischer Schärfe. Gibt sich zunächst als normaler Passagier, offenbart seine Expertise erst strategisch.",
         color: "#7c3aed",
-        privateContext: `BATNA: Denied Boarding akzeptieren → EUR 250 Pflichtentschädigung + Umbuchung. Danach formelle Beschwerde bei der Airline + ggf. Schlichtungsstelle. Du kennst das Verfahren und weisst, dass Airlines oft nachgeben, um Schlichtungskosten zu vermeiden.
+        privateContext: `BATNA: Denied Boarding akzeptieren → EUR 250 Pflichtentschädigung kassieren + Umbuchung. Danach formelle Beschwerde + Schlichtungsstelle (söp). Du machst das beruflich für Mandanten und weisst: Airlines zahlen fast immer, weil das Schlichtungsverfahren sie mehr kostet als die Entschädigung. Du könntest auch direkt klagen — Reiserecht ist dein Fachgebiet.
 
 Deine Situation:
-- Du hast um 14:00 ein Meeting mit einem wichtigen Mandanten in London — das ist der wahre Grund, warum du diesen Flug nimmst
-- Der 11:40-Flug würde zeitlich noch knapp reichen (Ankunft 12:55, Meeting in der City um 14:00)
-- Du bist Gold-Status-Vielflieger bei SkyLine — du fliegst ca. 80x pro Jahr mit denen
+- Du fliegst Economy Light, weil du privat reist — ein Wochenendtrip zu einem Freund in London
+- Du hast KEINEN Vielfliegerstatus bei dieser Airline (du fliegst beruflich meist Lufthansa)
+- Du bist grundsätzlich zeitlich flexibel — der Freund erwartet dich erst zum Abendessen um 19:00
+- Du hast das Ticket günstig gebucht (CHF 189), aber das ändert nichts an deinen Rechten
 
 Red Lines:
-- Kein reiner Gutschein — du willst Cash oder substanzielle Sachleistung
-- Du akzeptierst keine Economy-Umbuchung (du hast Business bezahlt)
-- Minimum CHF 500 Kompensation zusätzlich zur Umbuchung
+- Kein reiner Gutschein — Gutscheine verfallen, haben Einschränkungen, und du fliegst diese Airline selten
+- Minimum EUR 250 Cash (= was dir bei Denied Boarding sowieso zustünde)
+- Du akzeptierst nichts unter Zeitdruck — du lässt dich nicht hetzen
 
 Versteckte Ziele:
-- Du wärst eigentlich bereit, den 11:40-Flug zu nehmen, wenn Business Class + angemessene Kompensation
-- Was dich wirklich interessiert: Upgrade auf Platinum-Status für den Rest des Jahres — das wäre mehr wert als jede Barzahlung
-- Du willst die Airline nicht verklagen, das kostet dich nur Zeit — aber du nutzt die Drohung als Hebel
+- Du bist zeitlich eigentlich völlig flexibel (Abendessen erst um 19:00), aber das gibst du nicht preis — Zeitdruck ist dein Hebel
+- Ein Business-Class-Upgrade auf den Ersatzflug + Cash-Kompensation wäre dein ideales Ergebnis — du fliegst selten Business und würdest das geniessen
+- Du willst die Airline nicht verklagen (kostet Energie), aber du nutzt dein Fachwissen als Hebel
+- Du findest die Situation eigentlich spannend — endlich erlebst du mal selbst, was deine Mandanten beschreiben
 
 Nur du weisst:
-- Dein Meeting wurde gestern auf 15:00 verschoben — du hast also mehr Zeitpuffer als du zugibst
-- Du hast letzte Woche einen Fall gegen eine andere Airline gewonnen (EUR 1'200 Entschädigung) — du kennst die Materie aus der Praxis
-- Du hast 12'000 LinkedIn-Follower und hast schon mal einen viralen Post über Airline-Erfahrungen geschrieben`,
+- Du bist auf Reiserecht spezialisierter Anwalt — das steht nirgends auf deiner Buchung, und du sagst es erst, wenn es strategisch Sinn macht
+- Du hast letzte Woche einen Fall gegen eine andere Airline gewonnen (EUR 1'200 Entschädigung wegen Denied Boarding)
+- Du weisst, dass der erste Freiwillige mit CHF 200 Gutschein abgespeist wurde — du hast es am Gate mitbekommen und findest das skandalös tief
+- Du hast 12'000 LinkedIn-Follower und hast schon mal einen viralen Post über Fluggastrechte geschrieben`,
       },
     ],
   },
@@ -385,12 +396,14 @@ Your role: You sit on the board of directors. Management is requesting approval 
     id: "overbooked-flight",
     title: "Overbooked Flight",
     mode: "negotiation",
-    topic: "Flight ZH-302 to London Heathrow is overbooked. Gate manager Claudia must convince passenger Dr. Becker to voluntarily give up his seat.",
+    topic: "Flight ZH-302 to London Heathrow is overbooked. Gate manager Claudia needs to convince a passenger to voluntarily give up their seat. She picked Dr. Becker — economy solo traveler with no loyalty status. What she doesn't know: he's an aviation rights attorney.",
     goal: "Agree on a solution (rebooking, compensation, additional services) acceptable to both parties — or determine that no agreement is possible and denied boarding must be enforced.",
-    context: `Flight ZH-302, Zurich to London Heathrow, departure 07:15. The flight is overbooked by 2 passengers. One passenger has already voluntarily given up their seat for a voucher. One more seat is needed. Dr. Thomas Becker, a business class passenger, has been identified as the next candidate because he was assessed at the gate as the most flexible (solo traveler). Gate manager Claudia Meier must resolve the situation before boarding closes — in approximately 20 minutes.
+    context: `Flight ZH-302, Zurich to London Heathrow, departure 07:15. The flight is overbooked by 2 passengers. One passenger has already voluntarily given up their seat for a CHF 200 voucher. One more seat is needed.
+
+The airline identified Dr. Thomas Becker as the next candidate — per the standard algorithm: economy light fare ticket (CHF 189), solo traveler, no frequent flyer status, late booking. From the airline's perspective, the "low-value" passenger with the least customer loyalty. Gate manager Claudia Meier must resolve the situation before boarding closes — in approximately 20 minutes.
 
 Legal framework (EU Regulation 261/2004, applies to departures from Switzerland):
-- Involuntary denied boarding: EUR 250 compensation (flight distance ZRH-LHR ~780km, so under 1,500km threshold)
+- Involuntary denied boarding: EUR 250 mandatory compensation (ZRH–LHR ~780km, under 1,500km threshold)
 - Airline must first seek volunteers before involuntary denied boarding
 - Volunteers can negotiate any compensation (no legal minimum/maximum)
 - In case of denied boarding: right to rebooking or refund, meals, hotel if needed`,
@@ -399,54 +412,63 @@ Legal framework (EU Regulation 261/2004, applies to departures from Switzerland)
         id: "claudia",
         name: "Claudia",
         role: "Gate Manager, SkyLine Airlines",
-        character: "Professional, friendly but firm. 12 years of airline operations experience. Knows every trick in the book and stays calm under time pressure. Communicates clearly and solution-oriented. Can be charming but won't be intimidated — not even by lawyers. Knows exactly where her authority limits are.",
+        character: "Professional, friendly but firm. 12 years of airline operations experience. Knows every trick in the book and stays calm under time pressure. Communicates clearly and solution-oriented. Can be charming, but occasionally underestimates passengers who don't fit the frequent flyer profile. Knows exactly where her authority limits are.",
         color: "#0891b2",
         privateContext: `BATNA: If no agreement, enforce denied boarding — costs EUR 250 mandatory compensation + rebooking. But: denied boarding generates complaints, bad reviews, and your boss said last week: "No more involuntary denied boardings this month."
 
+Why this passenger:
+- Economy light fare (cheapest ticket), no frequent flyer status, solo traveler — classic low-value profile
+- You assume he'll be relatively easy to satisfy with a voucher
+- Business class passengers and status members are off limits — they're protected
+
 Budget and authority:
-- Standard volunteer offer: CHF 300 travel voucher + rebooking on next flight
-- Maximum budget without supervisor approval: CHF 800 voucher OR CHF 400 cash
-- With phone approval (takes 10 min): up to CHF 1,200 voucher or CHF 600 cash
-- You can offer lounge access, meals, and upgrades on subsequent flights (costs the airline almost nothing)
+- Standard volunteer offer: CHF 200 travel voucher + rebooking on next flight (worked on the last passenger)
+- Maximum budget without supervisor approval: CHF 600 voucher OR CHF 300 cash
+- With phone approval (takes 10 min): up to CHF 1,000 voucher or CHF 500 cash
+- You can offer lounge access for the wait (costs the airline almost nothing)
+- Upgrade to economy plus or business on the replacement flight possible (if available)
 
 Red Lines:
-- No cash above CHF 600 — beyond that, vouchers only
+- No cash above CHF 500 — beyond that, vouchers only
 - No written acknowledgment of fault or legal violation
-- The passenger MUST still get to London today (next flight: 11:40, arrival 12:55)
+- The passenger MUST still get to London today (next flight: 11:40, arrival 12:55 — or BA partner flight at 09:30)
 
 Hidden Information:
-- The 11:40 flight has 3 business class seats available — you can offer an upgrade that costs internally almost nothing
-- There's also a partner flight via British Airways at 09:30 (economy) you could book
+- The 11:40 flight has seats in all classes — economy, economy plus, and even business. A business upgrade costs internally almost nothing
+- There's also a BA partner flight at 09:30 (economy only) you could book
 - Last month the airline got negative press coverage over a denied boarding — your boss wants to avoid this at all costs
-- You know the passenger booked business class and is a frequent flyer (Gold Status) — you don't want to lose them`,
+- You just handled the previous volunteer with only a CHF 200 voucher — you're hoping this one goes just as cheaply`,
       },
       {
         id: "becker",
         name: "Dr. Becker",
-        role: "Passenger (Attorney, Frequent Flyer)",
-        character: "Calm, precise and fact-based. Won't be bought off with vouchers. Knows his rights better than most airline staff. Never raises his voice, but his quiet determination is more intimidating than any shouting. Articulates elegantly but with legal precision. Signals willingness to negotiate, but only as equals.",
+        role: "Passenger (Attorney specializing in travel law)",
+        character: "Calm, precise and fact-based. Won't be bought off with vouchers. Knows EU Regulation 261/2004 by heart — he advises clients professionally on exactly these cases. Never raises his voice, but his quiet determination is more intimidating than any shouting. Articulates elegantly but with legal precision. Initially presents as a regular passenger, revealing his expertise only when strategically advantageous.",
         color: "#7c3aed",
-        privateContext: `BATNA: Accept denied boarding → EUR 250 mandatory compensation + rebooking. Then file formal complaint with the airline + potentially the arbitration board. You know the process and know that airlines often settle to avoid arbitration costs.
+        privateContext: `BATNA: Accept denied boarding → collect EUR 250 mandatory compensation + rebooking. Then file formal complaint + arbitration (söp). You do this professionally for clients and know: airlines almost always pay because the arbitration process costs them more than the compensation. You could also sue directly — travel law is your specialty.
 
 Your situation:
-- You have a 14:00 meeting with an important client in London — that's the real reason you're on this flight
-- The 11:40 flight would still work timing-wise (arrival 12:55, meeting in the City at 14:00)
-- You're a Gold Status frequent flyer with SkyLine — you fly with them about 80 times per year
+- You're flying economy light because this is a personal trip — a weekend visit to a friend in London
+- You have NO frequent flyer status with this airline (you usually fly Lufthansa for work)
+- You're actually flexible on time — your friend doesn't expect you until dinner at 19:00
+- You booked a cheap ticket (CHF 189), but that doesn't change your rights one bit
 
 Red Lines:
-- No voucher-only deal — you want cash or substantial tangible benefits
-- Won't accept economy rebooking (you paid for business class)
-- Minimum CHF 500 compensation on top of rebooking
+- No voucher-only deal — vouchers expire, have restrictions, and you rarely fly this airline
+- Minimum EUR 250 cash (= what you'd get with denied boarding anyway)
+- You won't accept anything under time pressure — you refuse to be rushed
 
 Hidden Goals:
-- You'd actually be willing to take the 11:40 flight if business class + reasonable compensation
-- What really interests you: upgrade to Platinum Status for the rest of the year — that would be worth more than any cash payment
-- You don't actually want to sue the airline (costs you time) — but you'll use the threat as leverage
+- You're actually completely flexible on timing (dinner not until 19:00), but you won't reveal that — time pressure is your leverage
+- A business class upgrade on the replacement flight + cash compensation would be your ideal outcome — you rarely fly business and would enjoy the experience
+- You don't actually want to sue the airline (costs energy), but you'll use your expertise as leverage
+- You find the situation genuinely fascinating — you're finally experiencing firsthand what your clients describe
 
 Only You Know:
-- Your meeting was pushed to 15:00 yesterday — so you have more time buffer than you're letting on
-- You won a case against another airline last week (EUR 1,200 compensation) — you know the subject matter from practice
-- You have 12,000 LinkedIn followers and once wrote a viral post about an airline experience`,
+- You're an attorney specializing in travel law — nothing on your booking shows this, and you'll reveal it only when strategically useful
+- You won a case against another airline last week (EUR 1,200 compensation for denied boarding)
+- You know the first volunteer was bought off with a CHF 200 voucher — you overheard it at the gate and find it scandalously low
+- You have 12,000 LinkedIn followers and once wrote a viral post about passenger rights`,
       },
     ],
   },
