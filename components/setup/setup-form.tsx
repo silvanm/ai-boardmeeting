@@ -11,12 +11,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Play, RotateCcw, Globe, Handshake } from "lucide-react";
+import { Play, RotateCcw, Globe, Handshake, Link } from "lucide-react";
 import { useLocale } from "@/lib/i18n";
+import { useSession } from "next-auth/react";
 
 export function SetupForm() {
   const router = useRouter();
   const { locale, setLocale, t } = useLocale();
+  const { data: session } = useSession();
+  const isAdmin = (session as any)?.authType === "google";
   const [config, setConfig] = useState<DebateConfig>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("debateSettings");
@@ -86,6 +89,16 @@ export function SetupForm() {
             <Globe className="h-4 w-4 mr-1" />
             {locale === "de" ? "EN" : "DE"}
           </Button>
+          {isAdmin && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => router.push("/admin/magic-links")}
+            >
+              <Link className="h-4 w-4 mr-1" />
+              {t("magicLinkTitle")}
+            </Button>
+          )}
           <Button variant="outline" onClick={loadDefaults}>
             <RotateCcw className="h-4 w-4 mr-2" /> {t("loadDefaults")}
           </Button>

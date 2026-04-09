@@ -83,6 +83,18 @@ const translations = {
     keyTerms: "Vereinbarte Bedingungen",
     concessionsMade: "Zugeständnisse",
     unresolvedPoints: "Offene Punkte",
+    // Magic Links
+    magicLinkTitle: "Zugangslinks erstellen",
+    magicLinkSubtitle: "Erstelle einen temporären Zugangslink für externe Teilnehmer",
+    magicLinkEmail: "E-Mail",
+    magicLinkName: "Name",
+    magicLinkGenerate: "Link erstellen",
+    magicLinkCopied: "Link kopiert!",
+    magicLinkExpiry: "Gültig für 48 Stunden",
+    magicLinkExpired: "Link abgelaufen",
+    magicLinkExpiredMessage: "Dieser Link ist nicht mehr gültig. Bitte fordere einen neuen Link an.",
+    magicLinkInvalid: "Ungültiger Link",
+    magicLinkSigningIn: "Anmeldung läuft...",
   },
   en: {
     // Setup
@@ -162,6 +174,18 @@ const translations = {
     keyTerms: "Key Terms",
     concessionsMade: "Concessions Made",
     unresolvedPoints: "Unresolved Points",
+    // Magic Links
+    magicLinkTitle: "Create Access Links",
+    magicLinkSubtitle: "Generate a temporary access link for external participants",
+    magicLinkEmail: "Email",
+    magicLinkName: "Name",
+    magicLinkGenerate: "Generate Link",
+    magicLinkCopied: "Link copied!",
+    magicLinkExpiry: "Valid for 48 hours",
+    magicLinkExpired: "Link expired",
+    magicLinkExpiredMessage: "This link is no longer valid. Please request a new one from your contact.",
+    magicLinkInvalid: "Invalid link",
+    magicLinkSigningIn: "Signing you in...",
   },
 } as const;
 
