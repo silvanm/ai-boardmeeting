@@ -23,8 +23,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         try {
           const payload = await verifyMagicLinkToken(token);
           return {
-            id: payload.email,
-            email: payload.email,
+            id: `guest-${Date.now()}`,
             name: payload.name,
           };
         } catch {

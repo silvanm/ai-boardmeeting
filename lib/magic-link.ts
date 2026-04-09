@@ -1,7 +1,6 @@
 import { SignJWT, jwtVerify } from "jose";
 
 export interface MagicLinkPayload {
-  email: string;
   name: string;
   generatedBy: string;
 }
@@ -18,7 +17,6 @@ export async function createMagicLinkToken(
   payload: MagicLinkPayload
 ): Promise<string> {
   return new SignJWT({
-    email: payload.email,
     name: payload.name,
     generatedBy: payload.generatedBy,
     type: "magic-link",
@@ -42,7 +40,6 @@ export async function verifyMagicLinkToken(
   }
 
   return {
-    email: payload.email as string,
     name: payload.name as string,
     generatedBy: payload.generatedBy as string,
   };

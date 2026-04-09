@@ -14,7 +14,6 @@ export default function MagicLinksPage() {
   const { data: session } = useSession();
   const { t } = useLocale();
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [generatedLink, setGeneratedLink] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -31,7 +30,7 @@ export default function MagicLinksPage() {
       const res = await fetch("/api/admin/magic-link", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, name }),
+        body: JSON.stringify({ name }),
       });
 
       if (!res.ok) {
@@ -97,17 +96,6 @@ export default function MagicLinksPage() {
               placeholder="Max Mustermann"
             />
           </div>
-          <div className="space-y-1">
-            <Label htmlFor="guest-email">{t("magicLinkEmail")}</Label>
-            <Input
-              id="guest-email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="max@example.com"
-            />
-          </div>
-
           {error && (
             <div className="bg-red-50 text-red-700 text-sm rounded-md p-3">
               {error}
@@ -116,7 +104,7 @@ export default function MagicLinksPage() {
 
           <Button
             onClick={handleGenerate}
-            disabled={!name.trim() || !email.trim() || loading}
+            disabled={!name.trim() || loading}
             className="w-full"
           >
             {loading ? "..." : t("magicLinkGenerate")}

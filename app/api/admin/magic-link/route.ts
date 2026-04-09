@@ -9,17 +9,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { email, name } = await req.json();
+  const { name } = await req.json();
 
-  if (!email || !name) {
+  if (!name) {
     return NextResponse.json(
-      { error: "email and name are required" },
+      { error: "name is required" },
       { status: 400 }
     );
   }
 
   const token = await createMagicLinkToken({
-    email,
     name,
     generatedBy: session.user.email,
   });
