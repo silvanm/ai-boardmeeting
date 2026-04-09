@@ -50,7 +50,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     session({ session, token }) {
       if (token.authType) {
-        (session as any).authType = token.authType;
+        (session as unknown as Record<string, unknown>).authType = token.authType;
       }
       return session;
     },

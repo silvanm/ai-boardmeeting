@@ -19,7 +19,7 @@ export default function MagicLinksPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const isAdmin = (session as any)?.authType === "google";
+  const isAdmin = (session as unknown as Record<string, unknown>)?.authType === "google";
 
   const handleGenerate = async () => {
     setError(null);

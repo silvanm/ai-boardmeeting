@@ -19,7 +19,7 @@ export function SetupForm() {
   const router = useRouter();
   const { locale, setLocale, t } = useLocale();
   const { data: session } = useSession();
-  const isAdmin = (session as any)?.authType === "google";
+  const isAdmin = (session as unknown as Record<string, unknown>)?.authType === "google";
   const [config, setConfig] = useState<DebateConfig>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("debateSettings");
