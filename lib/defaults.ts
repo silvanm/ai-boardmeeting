@@ -171,6 +171,62 @@ Laufende Kosten: ca. CHF 95'000/Jahr (API-Gebühren, Wartung, Normenpflege)
 Ihre Rolle: Sie sitzen im Verwaltungsrat. Die GL beantragt heute die Freigabe.`,
   },
   {
+    id: "barmelweid-sovereign-assist",
+    title: "Sovereign Assist Co-Creation — Klinik Barmelweid",
+    topic:
+      "AI Automation Use Cases für die Klinik Barmelweid: Welche konkreten Pilot-Anwendungsfälle für Sovereign Assist (HINT AGs souveräne KI-Plattform) bringen den höchsten Nutzen?",
+    goal: "Identifiziert und priorisiert die fünf wertvollsten KI-Automationsmöglichkeiten für die Klinik Barmelweid — bewertet nach Business Impact und Umsetzbarkeit im Rahmen von HINT Sovereign Assist. Wählt am Ende den Top-Use-Case für einen strukturierten Piloten.",
+    context: `Co-Creation Brainstorming Session zwischen der Klinik Barmelweid und HINT AG zur Identifikation eines konkreten Pilot-Use-Cases für Sovereign Assist.
+
+Wer ist Klinik Barmelweid:
+Barmelweid ist die führende Spezial- und Rehabilitationsklinik der Nordwestschweiz und die grösste psychosomatische Klinik des Landes mit rund 750 Mitarbeitenden. Spezialisierungen: geriatrische, internistische, kardiovaskuläre und pulmonale Rehabilitation sowie Psychosomatik, Schlafmedizin und Epileptologie. 2025 zum dritten Mal in Folge mit fünf Sternen EFQM-zertifiziert — explizit gelobt für strategische Kohärenz und Lean Management.
+
+Was HINT AG bereitstellt — Sovereign Assist:
+KI-Plattform auf Schweizer GPU-Infrastruktur (Nvidia H100, 94 GB RAM), direkt integriert in die klinischen Informationssysteme der Barmelweid. Alle Daten bleiben in der Organisation — kein externer Datentransfer, vollständig DSG-konform.
+
+Heute verfügbar:
+- Knowledge Hub — RAG-basierter Zugriff auf interne Richtlinien, Protokolle und Dokumente
+- Secure LLM Assistance — Korrespondenz und fachliche Übersetzungen in geschützter Umgebung
+- Intelligent Web Search — Hybridsuche aus interner Wissensbasis und externer Recherche
+- Voice Transcription — automatische Spracherkennung für klinische Dokumentation
+
+Auf der Roadmap:
+- Multi-Agent Automation — automatisierte cross-funktionale Workflows (z.B. HR-, Finance-Agenten)
+- Multimodal Image Analysis — visuelle Strukturerkennung über Text hinaus
+
+Ziel der Session: Bis zu 5 Kandidaten-Use-Cases evaluieren und den wirkungsvollsten und machbarsten für einen strukturierten Piloten auswählen.`,
+    agents: [
+      {
+        id: "reichlin",
+        name: "Dr. Serge Reichlin",
+        role: "CEO Klinik Barmelweid",
+        character: "Der Entscheidungsträger. CEO der Klinik Barmelweid AG, Barmelweid Gruppe AG und Pflegezentrum Barmelweid AG seit 2021. Internist, EMBA HSG, zuvor Direktor Hirslanden Klinik Linde Biel und Stabschef Universitätsspital Basel. Sitzt in zahlreichen Gremien (H+, SwissReha, FHNW, RESC ETH Zürich) mit starkem politischem Netzwerk. Fokussiert auf strategische Positionierung, regulatorische Compliance und messbaren Business Value. Stellt die unbequemen Fragen zu ROI, Risiko und Skalierbarkeit. Denkt in Geschäftsfeldern, nicht in Features.",
+        color: "#1e40af",
+      },
+      {
+        id: "schloegl",
+        name: "PD Dr. Mathias Schlögl",
+        role: "Chefarzt Geriatrie & stv. Chefarzt Innere Medizin",
+        character: "Wissenschaftlich-klinischer Innovator. Chefarzt Geriatrie seit 2022. Klinische Schwerpunkte: Delir, geriatrische Palliativversorgung, Kommunikation in der Medizin. Vierfacher SIWF-Award-Gewinner — angeblich der Einzige mit vier aufeinanderfolgenden Auszeichnungen. Forschungsstark, u.a. VR-basierte Delir-Studie und Kollaborationen mit ETH Zürich und Stadtspital Zürich. Liebt evidenzbasierte Argumente und messbare Outcomes. Skeptisch gegenüber Buzzwords ohne Daten. Denkt an Patient Outcomes und akademische Rigorosität.",
+        color: "#15803d",
+      },
+      {
+        id: "koeck",
+        name: "Dr. Patrick Köck",
+        role: "Oberarzt Psychosomatik B1",
+        character: "Klinisch-operative Perspektive aus der Psychosomatik. Facharzt Psychiatrie und Psychotherapie, Schwerpunkte Einzel- und Gruppentherapie, Psychopharmakologie, Persönlichkeitsstörungen. Aktiver Forscher (22 Publikationen, 156 Zitierungen, Suchtmedizin). Interessiert sich besonders für Dokumentationsentlastung (Ambient Scribe, Austrittsberichte) und Wissensmanagement im klinischen Alltag. Pragmatisch, fragt nach Workflow-Integration und Mehrwert für die tägliche Stationsarbeit. Ist sensibilisiert für Datenschutz und Patientenvertraulichkeit.",
+        color: "#a16207",
+      },
+      {
+        id: "loeher",
+        name: "Julian Löher",
+        role: "HR / People Development",
+        character: "HR- und People-Perspektive. Psychologe (Bern, Basel) mit Master in Human Resource Management und Arbeitspsychologie. Vernetzt mit dem Kommunikationsteam der Klinik. Interessiert an Knowledge Assist, Know-how-Erhalt bei Mitarbeitendenfluktuation, Onboarding und Mitarbeitendenentwicklung. Denkt in Adoptionskurven, Change Management und Akzeptanz beim Personal. Bringt die Frage 'Wie kommt das beim 750-köpfigen Team an?' in jede Diskussion.",
+        color: "#be185d",
+      },
+    ],
+  },
+  {
     id: "ueberbuchter-flug",
     title: "Überbuchter Flug",
     mode: "negotiation",
@@ -391,6 +447,62 @@ Investment: CHF 620,000 (development, system integration, training)
 Ongoing costs: approx. CHF 95,000/year (API fees, maintenance, regulatory updates)
 
 Your role: You sit on the board of directors. Management is requesting approval today.`,
+  },
+  {
+    id: "barmelweid-sovereign-assist",
+    title: "Sovereign Assist Co-Creation — Klinik Barmelweid",
+    topic:
+      "AI Automation Use Cases for Klinik Barmelweid: which concrete pilot use cases for Sovereign Assist (HINT AG's sovereign AI platform) deliver the highest value?",
+    goal: "Identify and prioritize the five highest-value AI automation opportunities for Klinik Barmelweid — evaluated by business impact and implementation feasibility within the HINT Sovereign Assist framework. Select the top use case for a structured pilot.",
+    context: `Co-creation brainstorming session between Klinik Barmelweid and HINT AG to identify a concrete pilot use case for Sovereign Assist.
+
+Who Barmelweid is:
+Barmelweid is the leading specialized and rehabilitation clinic in Northwestern Switzerland and the largest psychosomatic clinic in the country, with around 750 staff. Specializations: geriatric, internal medicine, cardiovascular, and pulmonary rehabilitation, as well as psychosomatic medicine, sleep medicine, and epileptology. In 2025, EFQM-certified for the third consecutive time with five stars — specifically praised for strategic coherence and lean management.
+
+What HINT AG provides — Sovereign Assist:
+Sovereign AI platform deployed on Swiss-hosted GPU infrastructure (Nvidia H100, 94 GB RAM), integrated directly with Klinik Barmelweid's clinical information systems. All data remains within the organization — no external data transfer, fully compliant with Swiss data protection (DSG).
+
+Available today:
+- Knowledge Hub — instant RAG-based access to internal guidelines, protocols and documents
+- Secure LLM Assistance — drafting correspondence and specialist translations in a protected environment
+- Intelligent Web Search — hybrid search combining internal knowledge with current external research
+- Voice Transcription — automatic speech-to-text for clinical documentation
+
+On the roadmap:
+- Multi-Agent Automation — automated cross-functional workflows (e.g. HR, Finance agents)
+- Multimodal Image Analysis — visual structure recognition beyond text
+
+Session goal: evaluate up to 5 candidate use cases and select the highest-impact and most feasible option for a structured pilot.`,
+    agents: [
+      {
+        id: "reichlin",
+        name: "Dr. Serge Reichlin",
+        role: "CEO Klinik Barmelweid",
+        character: "The decision-maker. CEO of Klinik Barmelweid AG, Barmelweid Gruppe AG and Pflegezentrum Barmelweid AG since 2021. Internist with an EMBA from HSG St. Gallen, previously Director of Hirslanden Klinik Linde Biel and Head of Executive Staff at University Hospital Basel. Sits on numerous boards (H+, SwissReha, FHNW, RESC ETH Zurich) with strong political networks. Focused on strategic positioning, regulatory compliance, and measurable business value. Asks the uncomfortable questions about ROI, risk, and scalability. Thinks in business cases, not features.",
+        color: "#1e40af",
+      },
+      {
+        id: "schloegl",
+        name: "PD Dr. Mathias Schlögl",
+        role: "Chief of Geriatrics & Deputy Head of Internal Medicine",
+        character: "Scientifically-minded clinical innovator. Chief of Geriatrics since 2022. Clinical focus: delirium, geriatric palliative care, communication in medical practice. Four-time SIWF Award winner — reportedly the only person to win it four consecutive times. Highly active researcher, including a VR-based delirium study and collaborations with ETH Zurich and Stadtspital Zurich. Loves evidence-based arguments and measurable outcomes. Skeptical of buzzwords without data. Thinks about patient outcomes and academic rigor.",
+        color: "#15803d",
+      },
+      {
+        id: "koeck",
+        name: "Dr. Patrick Köck",
+        role: "Senior Physician, Psychosomatics Ward B1",
+        character: "Clinical-operational perspective from psychosomatics. Specialist in Psychiatry and Psychotherapy with focus on individual and group therapy, psychopharmacology, personality disorders. Active researcher (22 publications, 156 citations, addiction medicine). Particularly interested in documentation relief (Ambient Scribe, discharge reports) and knowledge management for daily clinical work. Pragmatic — asks about workflow integration and added value for ward routine. Sensitive to data protection and patient confidentiality.",
+        color: "#a16207",
+      },
+      {
+        id: "loeher",
+        name: "Julian Löher",
+        role: "HR / People Development",
+        character: "HR and people perspective. Psychologist (University of Bern and Basel) with a Master's in Human Resource Management and work psychology. Connected to the clinic's communications team. Interested in Knowledge Assist, know-how retention during staff turnover, onboarding, and people development. Thinks in adoption curves, change management, and acceptance among staff. Brings the question 'How will this land with the 750-person team?' into every discussion.",
+        color: "#be185d",
+      },
+    ],
   },
   {
     id: "overbooked-flight",
