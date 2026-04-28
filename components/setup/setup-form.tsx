@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { DebateConfig } from "@/lib/types";
 import { getDefaultConfig, getScenarios, getDefaultAgents, Scenario } from "@/lib/defaults";
@@ -31,8 +31,13 @@ export function SetupForm() {
   });
   const [currentScenarios, setCurrentScenarios] = useState<Scenario[]>(getScenarios(locale));
   const [selectedScenario, setSelectedScenario] = useState<string>(currentScenarios[0].id);
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
     const newScenarios = getScenarios(locale);
     const newConfig = getDefaultConfig(locale);
     setCurrentScenarios(newScenarios);
